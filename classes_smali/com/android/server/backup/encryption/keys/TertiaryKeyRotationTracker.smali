@@ -1,0 +1,198 @@
+.class public Lcom/android/server/backup/encryption/keys/TertiaryKeyRotationTracker;
+.super Ljava/lang/Object;
+.source "TertiaryKeyRotationTracker.java"
+
+
+# static fields
+.field private static final DEBUG:Z = false
+
+.field private static final MAX_BACKUPS_UNTIL_TERTIARY_KEY_ROTATION:I = 0x1f
+
+.field private static final SHARED_PREFERENCES_NAME:Ljava/lang/String; = "tertiary_key_rotation_tracker"
+
+.field private static final TAG:Ljava/lang/String; = "TertiaryKeyRotationTracker"
+
+
+# instance fields
+.field private final mSharedPreferences:Landroid/content/SharedPreferences;
+
+
+# direct methods
+.method constructor <init>(Landroid/content/SharedPreferences;)V
+    .registers 2
+    .annotation build Lcom/android/internal/annotations/VisibleForTesting;
+    .end annotation
+
+    .line 56
+    invoke-direct {p0}, Ljava/lang/Object;-><init>()V
+
+    .line 57
+    iput-object p1, p0, Lcom/android/server/backup/encryption/keys/TertiaryKeyRotationTracker;->mSharedPreferences:Landroid/content/SharedPreferences;
+
+    .line 58
+    return-void
+.end method
+
+.method private getBackupsSinceRotation(Ljava/lang/String;)I
+    .registers 4
+
+    .line 111
+    iget-object v0, p0, Lcom/android/server/backup/encryption/keys/TertiaryKeyRotationTracker;->mSharedPreferences:Landroid/content/SharedPreferences;
+
+    const/4 v1, 0x0
+
+    invoke-interface {v0, p1, v1}, Landroid/content/SharedPreferences;->getInt(Ljava/lang/String;I)I
+
+    move-result p1
+
+    return p1
+.end method
+
+.method public static getInstance(Landroid/content/Context;)Lcom/android/server/backup/encryption/keys/TertiaryKeyRotationTracker;
+    .registers 4
+
+    .line 48
+    new-instance v0, Lcom/android/server/backup/encryption/keys/TertiaryKeyRotationTracker;
+
+    .line 49
+    const-string/jumbo v1, "tertiary_key_rotation_tracker"
+
+    const/4 v2, 0x0
+
+    invoke-virtual {p0, v1, v2}, Landroid/content/Context;->getSharedPreferences(Ljava/lang/String;I)Landroid/content/SharedPreferences;
+
+    move-result-object p0
+
+    invoke-direct {v0, p0}, Lcom/android/server/backup/encryption/keys/TertiaryKeyRotationTracker;-><init>(Landroid/content/SharedPreferences;)V
+
+    .line 48
+    return-object v0
+.end method
+
+
+# virtual methods
+.method public isKeyRotationDue(Ljava/lang/String;)Z
+    .registers 3
+
+    .line 66
+    invoke-direct {p0, p1}, Lcom/android/server/backup/encryption/keys/TertiaryKeyRotationTracker;->getBackupsSinceRotation(Ljava/lang/String;)I
+
+    move-result p1
+
+    const/16 v0, 0x1f
+
+    if-lt p1, v0, :cond_a
+
+    const/4 p1, 0x1
+
+    goto :goto_b
+
+    :cond_a
+    const/4 p1, 0x0
+
+    :goto_b
+    return p1
+.end method
+
+.method public markAllForRotation()V
+    .registers 5
+
+    .line 103
+    iget-object v0, p0, Lcom/android/server/backup/encryption/keys/TertiaryKeyRotationTracker;->mSharedPreferences:Landroid/content/SharedPreferences;
+
+    invoke-interface {v0}, Landroid/content/SharedPreferences;->edit()Landroid/content/SharedPreferences$Editor;
+
+    move-result-object v0
+
+    .line 104
+    iget-object v1, p0, Lcom/android/server/backup/encryption/keys/TertiaryKeyRotationTracker;->mSharedPreferences:Landroid/content/SharedPreferences;
+
+    invoke-interface {v1}, Landroid/content/SharedPreferences;->getAll()Ljava/util/Map;
+
+    move-result-object v1
+
+    invoke-interface {v1}, Ljava/util/Map;->keySet()Ljava/util/Set;
+
+    move-result-object v1
+
+    invoke-interface {v1}, Ljava/util/Set;->iterator()Ljava/util/Iterator;
+
+    move-result-object v1
+
+    :goto_14
+    invoke-interface {v1}, Ljava/util/Iterator;->hasNext()Z
+
+    move-result v2
+
+    if-eqz v2, :cond_26
+
+    invoke-interface {v1}, Ljava/util/Iterator;->next()Ljava/lang/Object;
+
+    move-result-object v2
+
+    check-cast v2, Ljava/lang/String;
+
+    .line 105
+    const/16 v3, 0x1f
+
+    invoke-interface {v0, v2, v3}, Landroid/content/SharedPreferences$Editor;->putInt(Ljava/lang/String;I)Landroid/content/SharedPreferences$Editor;
+
+    .line 106
+    goto :goto_14
+
+    .line 107
+    :cond_26
+    invoke-interface {v0}, Landroid/content/SharedPreferences$Editor;->apply()V
+
+    .line 108
+    return-void
+.end method
+
+.method public recordBackup(Ljava/lang/String;)V
+    .registers 4
+
+    .line 76
+    invoke-direct {p0, p1}, Lcom/android/server/backup/encryption/keys/TertiaryKeyRotationTracker;->getBackupsSinceRotation(Ljava/lang/String;)I
+
+    move-result v0
+
+    add-int/lit8 v0, v0, 0x1
+
+    .line 77
+    iget-object v1, p0, Lcom/android/server/backup/encryption/keys/TertiaryKeyRotationTracker;->mSharedPreferences:Landroid/content/SharedPreferences;
+
+    invoke-interface {v1}, Landroid/content/SharedPreferences;->edit()Landroid/content/SharedPreferences$Editor;
+
+    move-result-object v1
+
+    invoke-interface {v1, p1, v0}, Landroid/content/SharedPreferences$Editor;->putInt(Ljava/lang/String;I)Landroid/content/SharedPreferences$Editor;
+
+    move-result-object p1
+
+    invoke-interface {p1}, Landroid/content/SharedPreferences$Editor;->apply()V
+
+    .line 90
+    return-void
+.end method
+
+.method public resetCountdown(Ljava/lang/String;)V
+    .registers 4
+
+    .line 98
+    iget-object v0, p0, Lcom/android/server/backup/encryption/keys/TertiaryKeyRotationTracker;->mSharedPreferences:Landroid/content/SharedPreferences;
+
+    invoke-interface {v0}, Landroid/content/SharedPreferences;->edit()Landroid/content/SharedPreferences$Editor;
+
+    move-result-object v0
+
+    const/4 v1, 0x0
+
+    invoke-interface {v0, p1, v1}, Landroid/content/SharedPreferences$Editor;->putInt(Ljava/lang/String;I)Landroid/content/SharedPreferences$Editor;
+
+    move-result-object p1
+
+    invoke-interface {p1}, Landroid/content/SharedPreferences$Editor;->apply()V
+
+    .line 99
+    return-void
+.end method

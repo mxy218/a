@@ -1,0 +1,83 @@
+.class Lcom/android/server/autofill/AutofillManagerServiceImpl$1;
+.super Ljava/lang/Object;
+.source "AutofillManagerServiceImpl.java"
+
+# interfaces
+.implements Lcom/android/server/autofill/RemoteAugmentedAutofillService$RemoteAugmentedAutofillServiceCallbacks;
+
+
+# annotations
+.annotation system Ldalvik/annotation/EnclosingMethod;
+    value = Lcom/android/server/autofill/AutofillManagerServiceImpl;->getRemoteAugmentedAutofillServiceLocked()Lcom/android/server/autofill/RemoteAugmentedAutofillService;
+.end annotation
+
+.annotation system Ldalvik/annotation/InnerClass;
+    accessFlags = 0x0
+    name = null
+.end annotation
+
+
+# instance fields
+.field final synthetic this$0:Lcom/android/server/autofill/AutofillManagerServiceImpl;
+
+
+# direct methods
+.method constructor <init>(Lcom/android/server/autofill/AutofillManagerServiceImpl;)V
+    .registers 2
+
+    .line 1127
+    iput-object p1, p0, Lcom/android/server/autofill/AutofillManagerServiceImpl$1;->this$0:Lcom/android/server/autofill/AutofillManagerServiceImpl;
+
+    invoke-direct {p0}, Ljava/lang/Object;-><init>()V
+
+    return-void
+.end method
+
+
+# virtual methods
+.method public onServiceDied(Lcom/android/server/autofill/RemoteAugmentedAutofillService;)V
+    .registers 3
+
+    .line 1130
+    const-string p1, "AutofillManagerServiceImpl"
+
+    const-string/jumbo v0, "remote augmented autofill service died"
+
+    invoke-static {p1, v0}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+
+    .line 1131
+    iget-object p1, p0, Lcom/android/server/autofill/AutofillManagerServiceImpl$1;->this$0:Lcom/android/server/autofill/AutofillManagerServiceImpl;
+
+    .line 1132
+    invoke-static {p1}, Lcom/android/server/autofill/AutofillManagerServiceImpl;->access$100(Lcom/android/server/autofill/AutofillManagerServiceImpl;)Lcom/android/server/autofill/RemoteAugmentedAutofillService;
+
+    move-result-object p1
+
+    .line 1133
+    if-eqz p1, :cond_13
+
+    .line 1134
+    invoke-virtual {p1}, Lcom/android/server/autofill/RemoteAugmentedAutofillService;->destroy()V
+
+    .line 1136
+    :cond_13
+    iget-object p1, p0, Lcom/android/server/autofill/AutofillManagerServiceImpl$1;->this$0:Lcom/android/server/autofill/AutofillManagerServiceImpl;
+
+    const/4 v0, 0x0
+
+    invoke-static {p1, v0}, Lcom/android/server/autofill/AutofillManagerServiceImpl;->access$102(Lcom/android/server/autofill/AutofillManagerServiceImpl;Lcom/android/server/autofill/RemoteAugmentedAutofillService;)Lcom/android/server/autofill/RemoteAugmentedAutofillService;
+
+    .line 1137
+    return-void
+.end method
+
+.method public bridge synthetic onServiceDied(Ljava/lang/Object;)V
+    .registers 2
+
+    .line 1127
+    check-cast p1, Lcom/android/server/autofill/RemoteAugmentedAutofillService;
+
+    invoke-virtual {p0, p1}, Lcom/android/server/autofill/AutofillManagerServiceImpl$1;->onServiceDied(Lcom/android/server/autofill/RemoteAugmentedAutofillService;)V
+
+    return-void
+.end method

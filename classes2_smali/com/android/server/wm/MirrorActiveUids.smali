@@ -1,0 +1,175 @@
+.class Lcom/android/server/wm/MirrorActiveUids;
+.super Ljava/lang/Object;
+.source "MirrorActiveUids.java"
+
+
+# instance fields
+.field private mUidStates:Landroid/util/SparseIntArray;
+
+
+# direct methods
+.method constructor <init>()V
+    .registers 2
+
+    .line 28
+    invoke-direct {p0}, Ljava/lang/Object;-><init>()V
+
+    .line 29
+    new-instance v0, Landroid/util/SparseIntArray;
+
+    invoke-direct {v0}, Landroid/util/SparseIntArray;-><init>()V
+
+    iput-object v0, p0, Lcom/android/server/wm/MirrorActiveUids;->mUidStates:Landroid/util/SparseIntArray;
+
+    return-void
+.end method
+
+
+# virtual methods
+.method declared-synchronized getUidState(I)I
+    .registers 4
+
+    monitor-enter p0
+
+    .line 51
+    :try_start_1
+    iget-object v0, p0, Lcom/android/server/wm/MirrorActiveUids;->mUidStates:Landroid/util/SparseIntArray;
+
+    const/16 v1, 0x15
+
+    invoke-virtual {v0, p1, v1}, Landroid/util/SparseIntArray;->get(II)I
+
+    move-result p1
+    :try_end_9
+    .catchall {:try_start_1 .. :try_end_9} :catchall_b
+
+    monitor-exit p0
+
+    return p1
+
+    :catchall_b
+    move-exception p1
+
+    monitor-exit p0
+
+    throw p1
+.end method
+
+.method declared-synchronized onActiveUidsCleared()V
+    .registers 2
+
+    monitor-enter p0
+
+    .line 40
+    :try_start_1
+    iget-object v0, p0, Lcom/android/server/wm/MirrorActiveUids;->mUidStates:Landroid/util/SparseIntArray;
+
+    invoke-virtual {v0}, Landroid/util/SparseIntArray;->clear()V
+    :try_end_6
+    .catchall {:try_start_1 .. :try_end_6} :catchall_8
+
+    .line 41
+    monitor-exit p0
+
+    return-void
+
+    .line 39
+    :catchall_8
+    move-exception v0
+
+    monitor-exit p0
+
+    throw v0
+.end method
+
+.method declared-synchronized onUidActive(II)V
+    .registers 4
+
+    monitor-enter p0
+
+    .line 32
+    :try_start_1
+    iget-object v0, p0, Lcom/android/server/wm/MirrorActiveUids;->mUidStates:Landroid/util/SparseIntArray;
+
+    invoke-virtual {v0, p1, p2}, Landroid/util/SparseIntArray;->put(II)V
+    :try_end_6
+    .catchall {:try_start_1 .. :try_end_6} :catchall_8
+
+    .line 33
+    monitor-exit p0
+
+    return-void
+
+    .line 31
+    :catchall_8
+    move-exception p1
+
+    monitor-exit p0
+
+    throw p1
+.end method
+
+.method declared-synchronized onUidInactive(I)V
+    .registers 3
+
+    monitor-enter p0
+
+    .line 36
+    :try_start_1
+    iget-object v0, p0, Lcom/android/server/wm/MirrorActiveUids;->mUidStates:Landroid/util/SparseIntArray;
+
+    invoke-virtual {v0, p1}, Landroid/util/SparseIntArray;->delete(I)V
+    :try_end_6
+    .catchall {:try_start_1 .. :try_end_6} :catchall_8
+
+    .line 37
+    monitor-exit p0
+
+    return-void
+
+    .line 35
+    :catchall_8
+    move-exception p1
+
+    monitor-exit p0
+
+    throw p1
+.end method
+
+.method declared-synchronized onUidProcStateChanged(II)V
+    .registers 4
+
+    monitor-enter p0
+
+    .line 44
+    :try_start_1
+    iget-object v0, p0, Lcom/android/server/wm/MirrorActiveUids;->mUidStates:Landroid/util/SparseIntArray;
+
+    invoke-virtual {v0, p1}, Landroid/util/SparseIntArray;->indexOfKey(I)I
+
+    move-result p1
+
+    .line 45
+    if-ltz p1, :cond_e
+
+    .line 46
+    iget-object v0, p0, Lcom/android/server/wm/MirrorActiveUids;->mUidStates:Landroid/util/SparseIntArray;
+
+    invoke-virtual {v0, p1, p2}, Landroid/util/SparseIntArray;->setValueAt(II)V
+    :try_end_e
+    .catchall {:try_start_1 .. :try_end_e} :catchall_10
+
+    .line 48
+    :cond_e
+    monitor-exit p0
+
+    return-void
+
+    .line 43
+    :catchall_10
+    move-exception p1
+
+    monitor-exit p0
+
+    throw p1
+.end method

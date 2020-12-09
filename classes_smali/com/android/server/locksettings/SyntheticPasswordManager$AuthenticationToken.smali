@@ -1,0 +1,381 @@
+.class Lcom/android/server/locksettings/SyntheticPasswordManager$AuthenticationToken;
+.super Ljava/lang/Object;
+.source "SyntheticPasswordManager.java"
+
+
+# annotations
+.annotation system Ldalvik/annotation/EnclosingClass;
+    value = Lcom/android/server/locksettings/SyntheticPasswordManager;
+.end annotation
+
+.annotation system Ldalvik/annotation/InnerClass;
+    accessFlags = 0x8
+    name = "AuthenticationToken"
+.end annotation
+
+
+# instance fields
+.field private E0:[B
+
+.field private P1:[B
+
+.field private final mVersion:B
+
+.field private syntheticPassword:Ljava/lang/String;
+
+
+# direct methods
+.method constructor <init>(B)V
+    .registers 2
+
+    .line 156
+    invoke-direct {p0}, Ljava/lang/Object;-><init>()V
+
+    .line 157
+    iput-byte p1, p0, Lcom/android/server/locksettings/SyntheticPasswordManager$AuthenticationToken;->mVersion:B
+
+    .line 158
+    return-void
+.end method
+
+.method static synthetic access$1000(Lcom/android/server/locksettings/SyntheticPasswordManager$AuthenticationToken;)[B
+    .registers 1
+
+    .line 144
+    iget-object p0, p0, Lcom/android/server/locksettings/SyntheticPasswordManager$AuthenticationToken;->P1:[B
+
+    return-object p0
+.end method
+
+.method static synthetic access$1002(Lcom/android/server/locksettings/SyntheticPasswordManager$AuthenticationToken;[B)[B
+    .registers 2
+
+    .line 144
+    iput-object p1, p0, Lcom/android/server/locksettings/SyntheticPasswordManager$AuthenticationToken;->P1:[B
+
+    return-object p1
+.end method
+
+.method static synthetic access$1100(Lcom/android/server/locksettings/SyntheticPasswordManager$AuthenticationToken;)Ljava/lang/String;
+    .registers 1
+
+    .line 144
+    iget-object p0, p0, Lcom/android/server/locksettings/SyntheticPasswordManager$AuthenticationToken;->syntheticPassword:Ljava/lang/String;
+
+    return-object p0
+.end method
+
+.method static synthetic access$1102(Lcom/android/server/locksettings/SyntheticPasswordManager$AuthenticationToken;Ljava/lang/String;)Ljava/lang/String;
+    .registers 2
+
+    .line 144
+    iput-object p1, p0, Lcom/android/server/locksettings/SyntheticPasswordManager$AuthenticationToken;->syntheticPassword:Ljava/lang/String;
+
+    return-object p1
+.end method
+
+.method static synthetic access$1200(Lcom/android/server/locksettings/SyntheticPasswordManager$AuthenticationToken;)B
+    .registers 1
+
+    .line 144
+    iget-byte p0, p0, Lcom/android/server/locksettings/SyntheticPasswordManager$AuthenticationToken;->mVersion:B
+
+    return p0
+.end method
+
+.method static synthetic access$900(Lcom/android/server/locksettings/SyntheticPasswordManager$AuthenticationToken;)[B
+    .registers 1
+
+    .line 144
+    iget-object p0, p0, Lcom/android/server/locksettings/SyntheticPasswordManager$AuthenticationToken;->E0:[B
+
+    return-object p0
+.end method
+
+.method static synthetic access$902(Lcom/android/server/locksettings/SyntheticPasswordManager$AuthenticationToken;[B)[B
+    .registers 2
+
+    .line 144
+    iput-object p1, p0, Lcom/android/server/locksettings/SyntheticPasswordManager$AuthenticationToken;->E0:[B
+
+    return-object p1
+.end method
+
+.method protected static create()Lcom/android/server/locksettings/SyntheticPasswordManager$AuthenticationToken;
+    .registers 3
+
+    .line 204
+    new-instance v0, Lcom/android/server/locksettings/SyntheticPasswordManager$AuthenticationToken;
+
+    const/4 v1, 0x3
+
+    invoke-direct {v0, v1}, Lcom/android/server/locksettings/SyntheticPasswordManager$AuthenticationToken;-><init>(B)V
+
+    .line 205
+    const/16 v1, 0x20
+
+    invoke-static {v1}, Lcom/android/server/locksettings/SyntheticPasswordManager;->secureRandom(I)[B
+
+    move-result-object v2
+
+    .line 206
+    invoke-static {v1}, Lcom/android/server/locksettings/SyntheticPasswordManager;->secureRandom(I)[B
+
+    move-result-object v1
+
+    .line 205
+    invoke-direct {v0, v2, v1}, Lcom/android/server/locksettings/SyntheticPasswordManager$AuthenticationToken;->initialize([B[B)V
+
+    .line 207
+    return-object v0
+.end method
+
+.method private derivePassword([B)[B
+    .registers 5
+
+    .line 161
+    iget-byte v0, p0, Lcom/android/server/locksettings/SyntheticPasswordManager$AuthenticationToken;->mVersion:B
+
+    const/4 v1, 0x3
+
+    if-ne v0, v1, :cond_19
+
+    .line 162
+    new-instance v0, Lcom/android/server/locksettings/SP800Derive;
+
+    iget-object v1, p0, Lcom/android/server/locksettings/SyntheticPasswordManager$AuthenticationToken;->syntheticPassword:Ljava/lang/String;
+
+    invoke-virtual {v1}, Ljava/lang/String;->getBytes()[B
+
+    move-result-object v1
+
+    invoke-direct {v0, v1}, Lcom/android/server/locksettings/SP800Derive;-><init>([B)V
+
+    .line 163
+    invoke-static {}, Lcom/android/server/locksettings/SyntheticPasswordManager;->access$000()[B
+
+    move-result-object v1
+
+    invoke-virtual {v0, p1, v1}, Lcom/android/server/locksettings/SP800Derive;->withContext([B[B)[B
+
+    move-result-object p1
+
+    .line 162
+    return-object p1
+
+    .line 165
+    :cond_19
+    const/4 v0, 0x1
+
+    new-array v0, v0, [[B
+
+    const/4 v1, 0x0
+
+    iget-object v2, p0, Lcom/android/server/locksettings/SyntheticPasswordManager$AuthenticationToken;->syntheticPassword:Ljava/lang/String;
+
+    .line 166
+    invoke-virtual {v2}, Ljava/lang/String;->getBytes()[B
+
+    move-result-object v2
+
+    aput-object v2, v0, v1
+
+    .line 165
+    invoke-static {p1, v0}, Lcom/android/server/locksettings/SyntheticPasswordCrypto;->personalisedHash([B[[B)[B
+
+    move-result-object p1
+
+    return-object p1
+.end method
+
+.method private initialize([B[B)V
+    .registers 6
+
+    .line 191
+    iput-object p2, p0, Lcom/android/server/locksettings/SyntheticPasswordManager$AuthenticationToken;->P1:[B
+
+    .line 192
+    nop
+
+    .line 194
+    invoke-static {}, Lcom/android/server/locksettings/SyntheticPasswordManager;->access$700()[B
+
+    move-result-object v0
+
+    const/4 v1, 0x2
+
+    new-array v1, v1, [[B
+
+    const/4 v2, 0x0
+
+    aput-object p1, v1, v2
+
+    const/4 v2, 0x1
+
+    aput-object p2, v1, v2
+
+    .line 193
+    invoke-static {v0, v1}, Lcom/android/server/locksettings/SyntheticPasswordCrypto;->personalisedHash([B[[B)[B
+
+    move-result-object p2
+
+    .line 192
+    invoke-static {p2}, Llibcore/util/HexEncoding;->encode([B)[C
+
+    move-result-object p2
+
+    invoke-static {p2}, Ljava/lang/String;->valueOf([C)Ljava/lang/String;
+
+    move-result-object p2
+
+    iput-object p2, p0, Lcom/android/server/locksettings/SyntheticPasswordManager$AuthenticationToken;->syntheticPassword:Ljava/lang/String;
+
+    .line 195
+    iget-object p2, p0, Lcom/android/server/locksettings/SyntheticPasswordManager$AuthenticationToken;->syntheticPassword:Ljava/lang/String;
+
+    invoke-virtual {p2}, Ljava/lang/String;->getBytes()[B
+
+    move-result-object p2
+
+    .line 196
+    invoke-static {}, Lcom/android/server/locksettings/SyntheticPasswordManager;->access$800()[B
+
+    move-result-object v0
+
+    .line 195
+    invoke-static {p2, v0, p1}, Lcom/android/server/locksettings/SyntheticPasswordCrypto;->encrypt([B[B[B)[B
+
+    move-result-object p1
+
+    iput-object p1, p0, Lcom/android/server/locksettings/SyntheticPasswordManager$AuthenticationToken;->E0:[B
+
+    .line 197
+    return-void
+.end method
+
+
+# virtual methods
+.method public computeP0()[B
+    .registers 4
+
+    .line 211
+    iget-object v0, p0, Lcom/android/server/locksettings/SyntheticPasswordManager$AuthenticationToken;->E0:[B
+
+    if-nez v0, :cond_6
+
+    .line 212
+    const/4 v0, 0x0
+
+    return-object v0
+
+    .line 214
+    :cond_6
+    iget-object v0, p0, Lcom/android/server/locksettings/SyntheticPasswordManager$AuthenticationToken;->syntheticPassword:Ljava/lang/String;
+
+    invoke-virtual {v0}, Ljava/lang/String;->getBytes()[B
+
+    move-result-object v0
+
+    invoke-static {}, Lcom/android/server/locksettings/SyntheticPasswordManager;->access$800()[B
+
+    move-result-object v1
+
+    iget-object v2, p0, Lcom/android/server/locksettings/SyntheticPasswordManager$AuthenticationToken;->E0:[B
+
+    invoke-static {v0, v1, v2}, Lcom/android/server/locksettings/SyntheticPasswordCrypto;->decrypt([B[B[B)[B
+
+    move-result-object v0
+
+    return-object v0
+.end method
+
+.method public deriveDiskEncryptionKey()[B
+    .registers 2
+
+    .line 179
+    invoke-static {}, Lcom/android/server/locksettings/SyntheticPasswordManager;->access$400()[B
+
+    move-result-object v0
+
+    invoke-direct {p0, v0}, Lcom/android/server/locksettings/SyntheticPasswordManager$AuthenticationToken;->derivePassword([B)[B
+
+    move-result-object v0
+
+    return-object v0
+.end method
+
+.method public deriveGkPassword()[B
+    .registers 2
+
+    .line 175
+    invoke-static {}, Lcom/android/server/locksettings/SyntheticPasswordManager;->access$300()[B
+
+    move-result-object v0
+
+    invoke-direct {p0, v0}, Lcom/android/server/locksettings/SyntheticPasswordManager$AuthenticationToken;->derivePassword([B)[B
+
+    move-result-object v0
+
+    return-object v0
+.end method
+
+.method public deriveKeyStorePassword()[B
+    .registers 2
+
+    .line 171
+    invoke-static {}, Lcom/android/server/locksettings/SyntheticPasswordManager;->access$100()[B
+
+    move-result-object v0
+
+    invoke-direct {p0, v0}, Lcom/android/server/locksettings/SyntheticPasswordManager$AuthenticationToken;->derivePassword([B)[B
+
+    move-result-object v0
+
+    invoke-static {v0}, Lcom/android/server/locksettings/SyntheticPasswordManager;->access$200([B)[B
+
+    move-result-object v0
+
+    return-object v0
+.end method
+
+.method public derivePasswordHashFactor()[B
+    .registers 2
+
+    .line 187
+    invoke-static {}, Lcom/android/server/locksettings/SyntheticPasswordManager;->access$600()[B
+
+    move-result-object v0
+
+    invoke-direct {p0, v0}, Lcom/android/server/locksettings/SyntheticPasswordManager$AuthenticationToken;->derivePassword([B)[B
+
+    move-result-object v0
+
+    return-object v0
+.end method
+
+.method public deriveVendorAuthSecret()[B
+    .registers 2
+
+    .line 183
+    invoke-static {}, Lcom/android/server/locksettings/SyntheticPasswordManager;->access$500()[B
+
+    move-result-object v0
+
+    invoke-direct {p0, v0}, Lcom/android/server/locksettings/SyntheticPasswordManager$AuthenticationToken;->derivePassword([B)[B
+
+    move-result-object v0
+
+    return-object v0
+.end method
+
+.method public recreate([B)V
+    .registers 3
+
+    .line 200
+    iget-object v0, p0, Lcom/android/server/locksettings/SyntheticPasswordManager$AuthenticationToken;->P1:[B
+
+    invoke-direct {p0, p1, v0}, Lcom/android/server/locksettings/SyntheticPasswordManager$AuthenticationToken;->initialize([B[B)V
+
+    .line 201
+    return-void
+.end method

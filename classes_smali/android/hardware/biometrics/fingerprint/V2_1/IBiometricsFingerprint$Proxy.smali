@@ -1,0 +1,1463 @@
+.class public final Landroid/hardware/biometrics/fingerprint/V2_1/IBiometricsFingerprint$Proxy;
+.super Ljava/lang/Object;
+.source "IBiometricsFingerprint.java"
+
+# interfaces
+.implements Landroid/hardware/biometrics/fingerprint/V2_1/IBiometricsFingerprint;
+
+
+# annotations
+.annotation system Ldalvik/annotation/EnclosingClass;
+    value = Landroid/hardware/biometrics/fingerprint/V2_1/IBiometricsFingerprint;
+.end annotation
+
+.annotation system Ldalvik/annotation/InnerClass;
+    accessFlags = 0x19
+    name = "Proxy"
+.end annotation
+
+
+# instance fields
+.field private mRemote:Landroid/os/IHwBinder;
+
+
+# direct methods
+.method public constructor <init>(Landroid/os/IHwBinder;)V
+    .registers 2
+
+    .line 230
+    invoke-direct {p0}, Ljava/lang/Object;-><init>()V
+
+    .line 231
+    invoke-static {p1}, Ljava/util/Objects;->requireNonNull(Ljava/lang/Object;)Ljava/lang/Object;
+
+    move-result-object p1
+
+    check-cast p1, Landroid/os/IHwBinder;
+
+    iput-object p1, p0, Landroid/hardware/biometrics/fingerprint/V2_1/IBiometricsFingerprint$Proxy;->mRemote:Landroid/os/IHwBinder;
+
+    .line 232
+    return-void
+.end method
+
+
+# virtual methods
+.method public asBinder()Landroid/os/IHwBinder;
+    .registers 2
+
+    .line 236
+    iget-object v0, p0, Landroid/hardware/biometrics/fingerprint/V2_1/IBiometricsFingerprint$Proxy;->mRemote:Landroid/os/IHwBinder;
+
+    return-object v0
+.end method
+
+.method public authenticate(JI)I
+    .registers 6
+    .annotation system Ldalvik/annotation/Throws;
+        value = {
+            Landroid/os/RemoteException;
+        }
+    .end annotation
+
+    .line 456
+    new-instance v0, Landroid/os/HwParcel;
+
+    invoke-direct {v0}, Landroid/os/HwParcel;-><init>()V
+
+    .line 457
+    const-string v1, "android.hardware.biometrics.fingerprint@2.1::IBiometricsFingerprint"
+
+    invoke-virtual {v0, v1}, Landroid/os/HwParcel;->writeInterfaceToken(Ljava/lang/String;)V
+
+    .line 458
+    invoke-virtual {v0, p1, p2}, Landroid/os/HwParcel;->writeInt64(J)V
+
+    .line 459
+    invoke-virtual {v0, p3}, Landroid/os/HwParcel;->writeInt32(I)V
+
+    .line 461
+    new-instance p1, Landroid/os/HwParcel;
+
+    invoke-direct {p1}, Landroid/os/HwParcel;-><init>()V
+
+    .line 463
+    :try_start_15
+    iget-object p2, p0, Landroid/hardware/biometrics/fingerprint/V2_1/IBiometricsFingerprint$Proxy;->mRemote:Landroid/os/IHwBinder;
+
+    const/16 p3, 0xa
+
+    const/4 v1, 0x0
+
+    invoke-interface {p2, p3, v0, p1, v1}, Landroid/os/IHwBinder;->transact(ILandroid/os/HwParcel;Landroid/os/HwParcel;I)V
+
+    .line 464
+    invoke-virtual {p1}, Landroid/os/HwParcel;->verifySuccess()V
+
+    .line 465
+    invoke-virtual {v0}, Landroid/os/HwParcel;->releaseTemporaryStorage()V
+
+    .line 467
+    invoke-virtual {p1}, Landroid/os/HwParcel;->readInt32()I
+
+    move-result p2
+    :try_end_27
+    .catchall {:try_start_15 .. :try_end_27} :catchall_2c
+
+    .line 468
+    nop
+
+    .line 470
+    invoke-virtual {p1}, Landroid/os/HwParcel;->release()V
+
+    .line 468
+    return p2
+
+    .line 470
+    :catchall_2c
+    move-exception p2
+
+    invoke-virtual {p1}, Landroid/os/HwParcel;->release()V
+
+    throw p2
+.end method
+
+.method public cancel()I
+    .registers 6
+    .annotation system Ldalvik/annotation/Throws;
+        value = {
+            Landroid/os/RemoteException;
+        }
+    .end annotation
+
+    .line 376
+    new-instance v0, Landroid/os/HwParcel;
+
+    invoke-direct {v0}, Landroid/os/HwParcel;-><init>()V
+
+    .line 377
+    const-string v1, "android.hardware.biometrics.fingerprint@2.1::IBiometricsFingerprint"
+
+    invoke-virtual {v0, v1}, Landroid/os/HwParcel;->writeInterfaceToken(Ljava/lang/String;)V
+
+    .line 379
+    new-instance v1, Landroid/os/HwParcel;
+
+    invoke-direct {v1}, Landroid/os/HwParcel;-><init>()V
+
+    .line 381
+    :try_start_f
+    iget-object v2, p0, Landroid/hardware/biometrics/fingerprint/V2_1/IBiometricsFingerprint$Proxy;->mRemote:Landroid/os/IHwBinder;
+
+    const/4 v3, 0x6
+
+    const/4 v4, 0x0
+
+    invoke-interface {v2, v3, v0, v1, v4}, Landroid/os/IHwBinder;->transact(ILandroid/os/HwParcel;Landroid/os/HwParcel;I)V
+
+    .line 382
+    invoke-virtual {v1}, Landroid/os/HwParcel;->verifySuccess()V
+
+    .line 383
+    invoke-virtual {v0}, Landroid/os/HwParcel;->releaseTemporaryStorage()V
+
+    .line 385
+    invoke-virtual {v1}, Landroid/os/HwParcel;->readInt32()I
+
+    move-result v0
+    :try_end_20
+    .catchall {:try_start_f .. :try_end_20} :catchall_25
+
+    .line 386
+    nop
+
+    .line 388
+    invoke-virtual {v1}, Landroid/os/HwParcel;->release()V
+
+    .line 386
+    return v0
+
+    .line 388
+    :catchall_25
+    move-exception v0
+
+    invoke-virtual {v1}, Landroid/os/HwParcel;->release()V
+
+    throw v0
+.end method
+
+.method public debug(Landroid/os/NativeHandle;Ljava/util/ArrayList;)V
+    .registers 6
+    .annotation system Ldalvik/annotation/Signature;
+        value = {
+            "(",
+            "Landroid/os/NativeHandle;",
+            "Ljava/util/ArrayList<",
+            "Ljava/lang/String;",
+            ">;)V"
+        }
+    .end annotation
+
+    .annotation system Ldalvik/annotation/Throws;
+        value = {
+            Landroid/os/RemoteException;
+        }
+    .end annotation
+
+    .line 497
+    new-instance v0, Landroid/os/HwParcel;
+
+    invoke-direct {v0}, Landroid/os/HwParcel;-><init>()V
+
+    .line 498
+    const-string v1, "android.hidl.base@1.0::IBase"
+
+    invoke-virtual {v0, v1}, Landroid/os/HwParcel;->writeInterfaceToken(Ljava/lang/String;)V
+
+    .line 499
+    invoke-virtual {v0, p1}, Landroid/os/HwParcel;->writeNativeHandle(Landroid/os/NativeHandle;)V
+
+    .line 500
+    invoke-virtual {v0, p2}, Landroid/os/HwParcel;->writeStringVector(Ljava/util/ArrayList;)V
+
+    .line 502
+    new-instance p1, Landroid/os/HwParcel;
+
+    invoke-direct {p1}, Landroid/os/HwParcel;-><init>()V
+
+    .line 504
+    :try_start_15
+    iget-object p2, p0, Landroid/hardware/biometrics/fingerprint/V2_1/IBiometricsFingerprint$Proxy;->mRemote:Landroid/os/IHwBinder;
+
+    const v1, 0xf444247
+
+    const/4 v2, 0x0
+
+    invoke-interface {p2, v1, v0, p1, v2}, Landroid/os/IHwBinder;->transact(ILandroid/os/HwParcel;Landroid/os/HwParcel;I)V
+
+    .line 505
+    invoke-virtual {p1}, Landroid/os/HwParcel;->verifySuccess()V
+
+    .line 506
+    invoke-virtual {v0}, Landroid/os/HwParcel;->releaseTemporaryStorage()V
+    :try_end_24
+    .catchall {:try_start_15 .. :try_end_24} :catchall_29
+
+    .line 508
+    invoke-virtual {p1}, Landroid/os/HwParcel;->release()V
+
+    .line 509
+    nop
+
+    .line 510
+    return-void
+
+    .line 508
+    :catchall_29
+    move-exception p2
+
+    invoke-virtual {p1}, Landroid/os/HwParcel;->release()V
+
+    throw p2
+.end method
+
+.method public enroll([BII)I
+    .registers 8
+    .annotation system Ldalvik/annotation/Throws;
+        value = {
+            Landroid/os/RemoteException;
+        }
+    .end annotation
+
+    .line 302
+    new-instance v0, Landroid/os/HwParcel;
+
+    invoke-direct {v0}, Landroid/os/HwParcel;-><init>()V
+
+    .line 303
+    const-string v1, "android.hardware.biometrics.fingerprint@2.1::IBiometricsFingerprint"
+
+    invoke-virtual {v0, v1}, Landroid/os/HwParcel;->writeInterfaceToken(Ljava/lang/String;)V
+
+    .line 305
+    new-instance v1, Landroid/os/HwBlob;
+
+    const/16 v2, 0x45
+
+    invoke-direct {v1, v2}, Landroid/os/HwBlob;-><init>(I)V
+
+    .line 307
+    nop
+
+    .line 308
+    nop
+
+    .line 310
+    if-eqz p1, :cond_47
+
+    array-length v3, p1
+
+    if-ne v3, v2, :cond_47
+
+    .line 314
+    const-wide/16 v2, 0x0
+
+    invoke-virtual {v1, v2, v3, p1}, Landroid/os/HwBlob;->putInt8Array(J[B)V
+
+    .line 315
+    nop
+
+    .line 317
+    invoke-virtual {v0, v1}, Landroid/os/HwParcel;->writeBuffer(Landroid/os/HwBlob;)V
+
+    .line 319
+    invoke-virtual {v0, p2}, Landroid/os/HwParcel;->writeInt32(I)V
+
+    .line 320
+    invoke-virtual {v0, p3}, Landroid/os/HwParcel;->writeInt32(I)V
+
+    .line 322
+    new-instance p1, Landroid/os/HwParcel;
+
+    invoke-direct {p1}, Landroid/os/HwParcel;-><init>()V
+
+    .line 324
+    :try_start_2c
+    iget-object p2, p0, Landroid/hardware/biometrics/fingerprint/V2_1/IBiometricsFingerprint$Proxy;->mRemote:Landroid/os/IHwBinder;
+
+    const/4 p3, 0x3
+
+    const/4 v1, 0x0
+
+    invoke-interface {p2, p3, v0, p1, v1}, Landroid/os/IHwBinder;->transact(ILandroid/os/HwParcel;Landroid/os/HwParcel;I)V
+
+    .line 325
+    invoke-virtual {p1}, Landroid/os/HwParcel;->verifySuccess()V
+
+    .line 326
+    invoke-virtual {v0}, Landroid/os/HwParcel;->releaseTemporaryStorage()V
+
+    .line 328
+    invoke-virtual {p1}, Landroid/os/HwParcel;->readInt32()I
+
+    move-result p2
+    :try_end_3d
+    .catchall {:try_start_2c .. :try_end_3d} :catchall_42
+
+    .line 329
+    nop
+
+    .line 331
+    invoke-virtual {p1}, Landroid/os/HwParcel;->release()V
+
+    .line 329
+    return p2
+
+    .line 331
+    :catchall_42
+    move-exception p2
+
+    invoke-virtual {p1}, Landroid/os/HwParcel;->release()V
+
+    throw p2
+
+    .line 311
+    :cond_47
+    new-instance p1, Ljava/lang/IllegalArgumentException;
+
+    const-string p2, "Array element is not of the expected length"
+
+    invoke-direct {p1, p2}, Ljava/lang/IllegalArgumentException;-><init>(Ljava/lang/String;)V
+
+    throw p1
+.end method
+
+.method public enumerate()I
+    .registers 6
+    .annotation system Ldalvik/annotation/Throws;
+        value = {
+            Landroid/os/RemoteException;
+        }
+    .end annotation
+
+    .line 395
+    new-instance v0, Landroid/os/HwParcel;
+
+    invoke-direct {v0}, Landroid/os/HwParcel;-><init>()V
+
+    .line 396
+    const-string v1, "android.hardware.biometrics.fingerprint@2.1::IBiometricsFingerprint"
+
+    invoke-virtual {v0, v1}, Landroid/os/HwParcel;->writeInterfaceToken(Ljava/lang/String;)V
+
+    .line 398
+    new-instance v1, Landroid/os/HwParcel;
+
+    invoke-direct {v1}, Landroid/os/HwParcel;-><init>()V
+
+    .line 400
+    :try_start_f
+    iget-object v2, p0, Landroid/hardware/biometrics/fingerprint/V2_1/IBiometricsFingerprint$Proxy;->mRemote:Landroid/os/IHwBinder;
+
+    const/4 v3, 0x7
+
+    const/4 v4, 0x0
+
+    invoke-interface {v2, v3, v0, v1, v4}, Landroid/os/IHwBinder;->transact(ILandroid/os/HwParcel;Landroid/os/HwParcel;I)V
+
+    .line 401
+    invoke-virtual {v1}, Landroid/os/HwParcel;->verifySuccess()V
+
+    .line 402
+    invoke-virtual {v0}, Landroid/os/HwParcel;->releaseTemporaryStorage()V
+
+    .line 404
+    invoke-virtual {v1}, Landroid/os/HwParcel;->readInt32()I
+
+    move-result v0
+    :try_end_20
+    .catchall {:try_start_f .. :try_end_20} :catchall_25
+
+    .line 405
+    nop
+
+    .line 407
+    invoke-virtual {v1}, Landroid/os/HwParcel;->release()V
+
+    .line 405
+    return v0
+
+    .line 407
+    :catchall_25
+    move-exception v0
+
+    invoke-virtual {v1}, Landroid/os/HwParcel;->release()V
+
+    throw v0
+.end method
+
+.method public final equals(Ljava/lang/Object;)Z
+    .registers 2
+
+    .line 251
+    invoke-static {p0, p1}, Landroid/os/HidlSupport;->interfacesEqual(Landroid/os/IHwInterface;Ljava/lang/Object;)Z
+
+    move-result p1
+
+    return p1
+.end method
+
+.method public getAuthenticatorId()J
+    .registers 6
+    .annotation system Ldalvik/annotation/Throws;
+        value = {
+            Landroid/os/RemoteException;
+        }
+    .end annotation
+
+    .line 357
+    new-instance v0, Landroid/os/HwParcel;
+
+    invoke-direct {v0}, Landroid/os/HwParcel;-><init>()V
+
+    .line 358
+    const-string v1, "android.hardware.biometrics.fingerprint@2.1::IBiometricsFingerprint"
+
+    invoke-virtual {v0, v1}, Landroid/os/HwParcel;->writeInterfaceToken(Ljava/lang/String;)V
+
+    .line 360
+    new-instance v1, Landroid/os/HwParcel;
+
+    invoke-direct {v1}, Landroid/os/HwParcel;-><init>()V
+
+    .line 362
+    :try_start_f
+    iget-object v2, p0, Landroid/hardware/biometrics/fingerprint/V2_1/IBiometricsFingerprint$Proxy;->mRemote:Landroid/os/IHwBinder;
+
+    const/4 v3, 0x5
+
+    const/4 v4, 0x0
+
+    invoke-interface {v2, v3, v0, v1, v4}, Landroid/os/IHwBinder;->transact(ILandroid/os/HwParcel;Landroid/os/HwParcel;I)V
+
+    .line 363
+    invoke-virtual {v1}, Landroid/os/HwParcel;->verifySuccess()V
+
+    .line 364
+    invoke-virtual {v0}, Landroid/os/HwParcel;->releaseTemporaryStorage()V
+
+    .line 366
+    invoke-virtual {v1}, Landroid/os/HwParcel;->readInt64()J
+
+    move-result-wide v2
+    :try_end_20
+    .catchall {:try_start_f .. :try_end_20} :catchall_25
+
+    .line 367
+    nop
+
+    .line 369
+    invoke-virtual {v1}, Landroid/os/HwParcel;->release()V
+
+    .line 367
+    return-wide v2
+
+    .line 369
+    :catchall_25
+    move-exception v0
+
+    invoke-virtual {v1}, Landroid/os/HwParcel;->release()V
+
+    throw v0
+.end method
+
+.method public getDebugInfo()Landroid/hidl/base/V1_0/DebugInfo;
+    .registers 6
+    .annotation system Ldalvik/annotation/Throws;
+        value = {
+            Landroid/os/RemoteException;
+        }
+    .end annotation
+
+    .line 609
+    new-instance v0, Landroid/os/HwParcel;
+
+    invoke-direct {v0}, Landroid/os/HwParcel;-><init>()V
+
+    .line 610
+    const-string v1, "android.hidl.base@1.0::IBase"
+
+    invoke-virtual {v0, v1}, Landroid/os/HwParcel;->writeInterfaceToken(Ljava/lang/String;)V
+
+    .line 612
+    new-instance v1, Landroid/os/HwParcel;
+
+    invoke-direct {v1}, Landroid/os/HwParcel;-><init>()V
+
+    .line 614
+    :try_start_f
+    iget-object v2, p0, Landroid/hardware/biometrics/fingerprint/V2_1/IBiometricsFingerprint$Proxy;->mRemote:Landroid/os/IHwBinder;
+
+    const v3, 0xf524546
+
+    const/4 v4, 0x0
+
+    invoke-interface {v2, v3, v0, v1, v4}, Landroid/os/IHwBinder;->transact(ILandroid/os/HwParcel;Landroid/os/HwParcel;I)V
+
+    .line 615
+    invoke-virtual {v1}, Landroid/os/HwParcel;->verifySuccess()V
+
+    .line 616
+    invoke-virtual {v0}, Landroid/os/HwParcel;->releaseTemporaryStorage()V
+
+    .line 618
+    new-instance v0, Landroid/hidl/base/V1_0/DebugInfo;
+
+    invoke-direct {v0}, Landroid/hidl/base/V1_0/DebugInfo;-><init>()V
+
+    .line 619
+    invoke-virtual {v0, v1}, Landroid/hidl/base/V1_0/DebugInfo;->readFromParcel(Landroid/os/HwParcel;)V
+    :try_end_26
+    .catchall {:try_start_f .. :try_end_26} :catchall_2b
+
+    .line 620
+    nop
+
+    .line 622
+    invoke-virtual {v1}, Landroid/os/HwParcel;->release()V
+
+    .line 620
+    return-object v0
+
+    .line 622
+    :catchall_2b
+    move-exception v0
+
+    invoke-virtual {v1}, Landroid/os/HwParcel;->release()V
+
+    throw v0
+.end method
+
+.method public getHashChain()Ljava/util/ArrayList;
+    .registers 13
+    .annotation system Ldalvik/annotation/Signature;
+        value = {
+            "()",
+            "Ljava/util/ArrayList<",
+            "[B>;"
+        }
+    .end annotation
+
+    .annotation system Ldalvik/annotation/Throws;
+        value = {
+            Landroid/os/RemoteException;
+        }
+    .end annotation
+
+    .line 534
+    new-instance v0, Landroid/os/HwParcel;
+
+    invoke-direct {v0}, Landroid/os/HwParcel;-><init>()V
+
+    .line 535
+    const-string v1, "android.hidl.base@1.0::IBase"
+
+    invoke-virtual {v0, v1}, Landroid/os/HwParcel;->writeInterfaceToken(Ljava/lang/String;)V
+
+    .line 537
+    new-instance v1, Landroid/os/HwParcel;
+
+    invoke-direct {v1}, Landroid/os/HwParcel;-><init>()V
+
+    .line 539
+    :try_start_f
+    iget-object v2, p0, Landroid/hardware/biometrics/fingerprint/V2_1/IBiometricsFingerprint$Proxy;->mRemote:Landroid/os/IHwBinder;
+
+    const v3, 0xf485348
+
+    const/4 v10, 0x0
+
+    invoke-interface {v2, v3, v0, v1, v10}, Landroid/os/IHwBinder;->transact(ILandroid/os/HwParcel;Landroid/os/HwParcel;I)V
+
+    .line 540
+    invoke-virtual {v1}, Landroid/os/HwParcel;->verifySuccess()V
+
+    .line 541
+    invoke-virtual {v0}, Landroid/os/HwParcel;->releaseTemporaryStorage()V
+
+    .line 543
+    new-instance v0, Ljava/util/ArrayList;
+
+    invoke-direct {v0}, Ljava/util/ArrayList;-><init>()V
+
+    .line 545
+    const-wide/16 v2, 0x10
+
+    invoke-virtual {v1, v2, v3}, Landroid/os/HwParcel;->readBuffer(J)Landroid/os/HwBlob;
+
+    move-result-object v2
+
+    .line 547
+    const-wide/16 v3, 0x8
+
+    invoke-virtual {v2, v3, v4}, Landroid/os/HwBlob;->getInt32(J)I
+
+    move-result v11
+
+    .line 548
+    mul-int/lit8 v3, v11, 0x20
+
+    int-to-long v3, v3
+
+    .line 549
+    invoke-virtual {v2}, Landroid/os/HwBlob;->handle()J
+
+    move-result-wide v5
+
+    const-wide/16 v7, 0x0
+
+    const/4 v9, 0x1
+
+    .line 548
+    move-object v2, v1
+
+    invoke-virtual/range {v2 .. v9}, Landroid/os/HwParcel;->readEmbeddedBuffer(JJJZ)Landroid/os/HwBlob;
+
+    move-result-object v2
+
+    .line 552
+    invoke-virtual {v0}, Ljava/util/ArrayList;->clear()V
+
+    .line 553
+    nop
+
+    :goto_42
+    if-ge v10, v11, :cond_55
+
+    .line 554
+    const/16 v3, 0x20
+
+    new-array v4, v3, [B
+
+    .line 556
+    mul-int/lit8 v5, v10, 0x20
+
+    int-to-long v5, v5
+
+    .line 557
+    invoke-virtual {v2, v5, v6, v4, v3}, Landroid/os/HwBlob;->copyToInt8Array(J[BI)V
+
+    .line 558
+    nop
+
+    .line 560
+    invoke-virtual {v0, v4}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
+    :try_end_52
+    .catchall {:try_start_f .. :try_end_52} :catchall_5a
+
+    .line 553
+    add-int/lit8 v10, v10, 0x1
+
+    goto :goto_42
+
+    .line 564
+    :cond_55
+    nop
+
+    .line 566
+    invoke-virtual {v1}, Landroid/os/HwParcel;->release()V
+
+    .line 564
+    return-object v0
+
+    .line 566
+    :catchall_5a
+    move-exception v0
+
+    invoke-virtual {v1}, Landroid/os/HwParcel;->release()V
+
+    throw v0
+.end method
+
+.method public final hashCode()I
+    .registers 2
+
+    .line 256
+    invoke-virtual {p0}, Landroid/hardware/biometrics/fingerprint/V2_1/IBiometricsFingerprint$Proxy;->asBinder()Landroid/os/IHwBinder;
+
+    move-result-object v0
+
+    invoke-virtual {v0}, Ljava/lang/Object;->hashCode()I
+
+    move-result v0
+
+    return v0
+.end method
+
+.method public interfaceChain()Ljava/util/ArrayList;
+    .registers 6
+    .annotation system Ldalvik/annotation/Signature;
+        value = {
+            "()",
+            "Ljava/util/ArrayList<",
+            "Ljava/lang/String;",
+            ">;"
+        }
+    .end annotation
+
+    .annotation system Ldalvik/annotation/Throws;
+        value = {
+            Landroid/os/RemoteException;
+        }
+    .end annotation
+
+    .line 478
+    new-instance v0, Landroid/os/HwParcel;
+
+    invoke-direct {v0}, Landroid/os/HwParcel;-><init>()V
+
+    .line 479
+    const-string v1, "android.hidl.base@1.0::IBase"
+
+    invoke-virtual {v0, v1}, Landroid/os/HwParcel;->writeInterfaceToken(Ljava/lang/String;)V
+
+    .line 481
+    new-instance v1, Landroid/os/HwParcel;
+
+    invoke-direct {v1}, Landroid/os/HwParcel;-><init>()V
+
+    .line 483
+    :try_start_f
+    iget-object v2, p0, Landroid/hardware/biometrics/fingerprint/V2_1/IBiometricsFingerprint$Proxy;->mRemote:Landroid/os/IHwBinder;
+
+    const v3, 0xf43484e
+
+    const/4 v4, 0x0
+
+    invoke-interface {v2, v3, v0, v1, v4}, Landroid/os/IHwBinder;->transact(ILandroid/os/HwParcel;Landroid/os/HwParcel;I)V
+
+    .line 484
+    invoke-virtual {v1}, Landroid/os/HwParcel;->verifySuccess()V
+
+    .line 485
+    invoke-virtual {v0}, Landroid/os/HwParcel;->releaseTemporaryStorage()V
+
+    .line 487
+    invoke-virtual {v1}, Landroid/os/HwParcel;->readStringVector()Ljava/util/ArrayList;
+
+    move-result-object v0
+    :try_end_22
+    .catchall {:try_start_f .. :try_end_22} :catchall_27
+
+    .line 488
+    nop
+
+    .line 490
+    invoke-virtual {v1}, Landroid/os/HwParcel;->release()V
+
+    .line 488
+    return-object v0
+
+    .line 490
+    :catchall_27
+    move-exception v0
+
+    invoke-virtual {v1}, Landroid/os/HwParcel;->release()V
+
+    throw v0
+.end method
+
+.method public interfaceDescriptor()Ljava/lang/String;
+    .registers 6
+    .annotation system Ldalvik/annotation/Throws;
+        value = {
+            Landroid/os/RemoteException;
+        }
+    .end annotation
+
+    .line 515
+    new-instance v0, Landroid/os/HwParcel;
+
+    invoke-direct {v0}, Landroid/os/HwParcel;-><init>()V
+
+    .line 516
+    const-string v1, "android.hidl.base@1.0::IBase"
+
+    invoke-virtual {v0, v1}, Landroid/os/HwParcel;->writeInterfaceToken(Ljava/lang/String;)V
+
+    .line 518
+    new-instance v1, Landroid/os/HwParcel;
+
+    invoke-direct {v1}, Landroid/os/HwParcel;-><init>()V
+
+    .line 520
+    :try_start_f
+    iget-object v2, p0, Landroid/hardware/biometrics/fingerprint/V2_1/IBiometricsFingerprint$Proxy;->mRemote:Landroid/os/IHwBinder;
+
+    const v3, 0xf445343
+
+    const/4 v4, 0x0
+
+    invoke-interface {v2, v3, v0, v1, v4}, Landroid/os/IHwBinder;->transact(ILandroid/os/HwParcel;Landroid/os/HwParcel;I)V
+
+    .line 521
+    invoke-virtual {v1}, Landroid/os/HwParcel;->verifySuccess()V
+
+    .line 522
+    invoke-virtual {v0}, Landroid/os/HwParcel;->releaseTemporaryStorage()V
+
+    .line 524
+    invoke-virtual {v1}, Landroid/os/HwParcel;->readString()Ljava/lang/String;
+
+    move-result-object v0
+    :try_end_22
+    .catchall {:try_start_f .. :try_end_22} :catchall_27
+
+    .line 525
+    nop
+
+    .line 527
+    invoke-virtual {v1}, Landroid/os/HwParcel;->release()V
+
+    .line 525
+    return-object v0
+
+    .line 527
+    :catchall_27
+    move-exception v0
+
+    invoke-virtual {v1}, Landroid/os/HwParcel;->release()V
+
+    throw v0
+.end method
+
+.method public linkToDeath(Landroid/os/IHwBinder$DeathRecipient;J)Z
+    .registers 5
+    .annotation system Ldalvik/annotation/Throws;
+        value = {
+            Landroid/os/RemoteException;
+        }
+    .end annotation
+
+    .line 588
+    iget-object v0, p0, Landroid/hardware/biometrics/fingerprint/V2_1/IBiometricsFingerprint$Proxy;->mRemote:Landroid/os/IHwBinder;
+
+    invoke-interface {v0, p1, p2, p3}, Landroid/os/IHwBinder;->linkToDeath(Landroid/os/IHwBinder$DeathRecipient;J)Z
+
+    move-result p1
+
+    return p1
+.end method
+
+.method public notifySyspropsChanged()V
+    .registers 6
+    .annotation system Ldalvik/annotation/Throws;
+        value = {
+            Landroid/os/RemoteException;
+        }
+    .end annotation
+
+    .line 629
+    new-instance v0, Landroid/os/HwParcel;
+
+    invoke-direct {v0}, Landroid/os/HwParcel;-><init>()V
+
+    .line 630
+    const-string v1, "android.hidl.base@1.0::IBase"
+
+    invoke-virtual {v0, v1}, Landroid/os/HwParcel;->writeInterfaceToken(Ljava/lang/String;)V
+
+    .line 632
+    new-instance v1, Landroid/os/HwParcel;
+
+    invoke-direct {v1}, Landroid/os/HwParcel;-><init>()V
+
+    .line 634
+    :try_start_f
+    iget-object v2, p0, Landroid/hardware/biometrics/fingerprint/V2_1/IBiometricsFingerprint$Proxy;->mRemote:Landroid/os/IHwBinder;
+
+    const v3, 0xf535953
+
+    const/4 v4, 0x1
+
+    invoke-interface {v2, v3, v0, v1, v4}, Landroid/os/IHwBinder;->transact(ILandroid/os/HwParcel;Landroid/os/HwParcel;I)V
+
+    .line 635
+    invoke-virtual {v0}, Landroid/os/HwParcel;->releaseTemporaryStorage()V
+    :try_end_1b
+    .catchall {:try_start_f .. :try_end_1b} :catchall_20
+
+    .line 637
+    invoke-virtual {v1}, Landroid/os/HwParcel;->release()V
+
+    .line 638
+    nop
+
+    .line 639
+    return-void
+
+    .line 637
+    :catchall_20
+    move-exception v0
+
+    invoke-virtual {v1}, Landroid/os/HwParcel;->release()V
+
+    throw v0
+.end method
+
+.method public ping()V
+    .registers 6
+    .annotation system Ldalvik/annotation/Throws;
+        value = {
+            Landroid/os/RemoteException;
+        }
+    .end annotation
+
+    .line 593
+    new-instance v0, Landroid/os/HwParcel;
+
+    invoke-direct {v0}, Landroid/os/HwParcel;-><init>()V
+
+    .line 594
+    const-string v1, "android.hidl.base@1.0::IBase"
+
+    invoke-virtual {v0, v1}, Landroid/os/HwParcel;->writeInterfaceToken(Ljava/lang/String;)V
+
+    .line 596
+    new-instance v1, Landroid/os/HwParcel;
+
+    invoke-direct {v1}, Landroid/os/HwParcel;-><init>()V
+
+    .line 598
+    :try_start_f
+    iget-object v2, p0, Landroid/hardware/biometrics/fingerprint/V2_1/IBiometricsFingerprint$Proxy;->mRemote:Landroid/os/IHwBinder;
+
+    const v3, 0xf504e47
+
+    const/4 v4, 0x0
+
+    invoke-interface {v2, v3, v0, v1, v4}, Landroid/os/IHwBinder;->transact(ILandroid/os/HwParcel;Landroid/os/HwParcel;I)V
+
+    .line 599
+    invoke-virtual {v1}, Landroid/os/HwParcel;->verifySuccess()V
+
+    .line 600
+    invoke-virtual {v0}, Landroid/os/HwParcel;->releaseTemporaryStorage()V
+    :try_end_1e
+    .catchall {:try_start_f .. :try_end_1e} :catchall_23
+
+    .line 602
+    invoke-virtual {v1}, Landroid/os/HwParcel;->release()V
+
+    .line 603
+    nop
+
+    .line 604
+    return-void
+
+    .line 602
+    :catchall_23
+    move-exception v0
+
+    invoke-virtual {v1}, Landroid/os/HwParcel;->release()V
+
+    throw v0
+.end method
+
+.method public postEnroll()I
+    .registers 6
+    .annotation system Ldalvik/annotation/Throws;
+        value = {
+            Landroid/os/RemoteException;
+        }
+    .end annotation
+
+    .line 338
+    new-instance v0, Landroid/os/HwParcel;
+
+    invoke-direct {v0}, Landroid/os/HwParcel;-><init>()V
+
+    .line 339
+    const-string v1, "android.hardware.biometrics.fingerprint@2.1::IBiometricsFingerprint"
+
+    invoke-virtual {v0, v1}, Landroid/os/HwParcel;->writeInterfaceToken(Ljava/lang/String;)V
+
+    .line 341
+    new-instance v1, Landroid/os/HwParcel;
+
+    invoke-direct {v1}, Landroid/os/HwParcel;-><init>()V
+
+    .line 343
+    :try_start_f
+    iget-object v2, p0, Landroid/hardware/biometrics/fingerprint/V2_1/IBiometricsFingerprint$Proxy;->mRemote:Landroid/os/IHwBinder;
+
+    const/4 v3, 0x4
+
+    const/4 v4, 0x0
+
+    invoke-interface {v2, v3, v0, v1, v4}, Landroid/os/IHwBinder;->transact(ILandroid/os/HwParcel;Landroid/os/HwParcel;I)V
+
+    .line 344
+    invoke-virtual {v1}, Landroid/os/HwParcel;->verifySuccess()V
+
+    .line 345
+    invoke-virtual {v0}, Landroid/os/HwParcel;->releaseTemporaryStorage()V
+
+    .line 347
+    invoke-virtual {v1}, Landroid/os/HwParcel;->readInt32()I
+
+    move-result v0
+    :try_end_20
+    .catchall {:try_start_f .. :try_end_20} :catchall_25
+
+    .line 348
+    nop
+
+    .line 350
+    invoke-virtual {v1}, Landroid/os/HwParcel;->release()V
+
+    .line 348
+    return v0
+
+    .line 350
+    :catchall_25
+    move-exception v0
+
+    invoke-virtual {v1}, Landroid/os/HwParcel;->release()V
+
+    throw v0
+.end method
+
+.method public preEnroll()J
+    .registers 6
+    .annotation system Ldalvik/annotation/Throws;
+        value = {
+            Landroid/os/RemoteException;
+        }
+    .end annotation
+
+    .line 283
+    new-instance v0, Landroid/os/HwParcel;
+
+    invoke-direct {v0}, Landroid/os/HwParcel;-><init>()V
+
+    .line 284
+    const-string v1, "android.hardware.biometrics.fingerprint@2.1::IBiometricsFingerprint"
+
+    invoke-virtual {v0, v1}, Landroid/os/HwParcel;->writeInterfaceToken(Ljava/lang/String;)V
+
+    .line 286
+    new-instance v1, Landroid/os/HwParcel;
+
+    invoke-direct {v1}, Landroid/os/HwParcel;-><init>()V
+
+    .line 288
+    :try_start_f
+    iget-object v2, p0, Landroid/hardware/biometrics/fingerprint/V2_1/IBiometricsFingerprint$Proxy;->mRemote:Landroid/os/IHwBinder;
+
+    const/4 v3, 0x2
+
+    const/4 v4, 0x0
+
+    invoke-interface {v2, v3, v0, v1, v4}, Landroid/os/IHwBinder;->transact(ILandroid/os/HwParcel;Landroid/os/HwParcel;I)V
+
+    .line 289
+    invoke-virtual {v1}, Landroid/os/HwParcel;->verifySuccess()V
+
+    .line 290
+    invoke-virtual {v0}, Landroid/os/HwParcel;->releaseTemporaryStorage()V
+
+    .line 292
+    invoke-virtual {v1}, Landroid/os/HwParcel;->readInt64()J
+
+    move-result-wide v2
+    :try_end_20
+    .catchall {:try_start_f .. :try_end_20} :catchall_25
+
+    .line 293
+    nop
+
+    .line 295
+    invoke-virtual {v1}, Landroid/os/HwParcel;->release()V
+
+    .line 293
+    return-wide v2
+
+    .line 295
+    :catchall_25
+    move-exception v0
+
+    invoke-virtual {v1}, Landroid/os/HwParcel;->release()V
+
+    throw v0
+.end method
+
+.method public remove(II)I
+    .registers 6
+    .annotation system Ldalvik/annotation/Throws;
+        value = {
+            Landroid/os/RemoteException;
+        }
+    .end annotation
+
+    .line 414
+    new-instance v0, Landroid/os/HwParcel;
+
+    invoke-direct {v0}, Landroid/os/HwParcel;-><init>()V
+
+    .line 415
+    const-string v1, "android.hardware.biometrics.fingerprint@2.1::IBiometricsFingerprint"
+
+    invoke-virtual {v0, v1}, Landroid/os/HwParcel;->writeInterfaceToken(Ljava/lang/String;)V
+
+    .line 416
+    invoke-virtual {v0, p1}, Landroid/os/HwParcel;->writeInt32(I)V
+
+    .line 417
+    invoke-virtual {v0, p2}, Landroid/os/HwParcel;->writeInt32(I)V
+
+    .line 419
+    new-instance p1, Landroid/os/HwParcel;
+
+    invoke-direct {p1}, Landroid/os/HwParcel;-><init>()V
+
+    .line 421
+    :try_start_15
+    iget-object p2, p0, Landroid/hardware/biometrics/fingerprint/V2_1/IBiometricsFingerprint$Proxy;->mRemote:Landroid/os/IHwBinder;
+
+    const/16 v1, 0x8
+
+    const/4 v2, 0x0
+
+    invoke-interface {p2, v1, v0, p1, v2}, Landroid/os/IHwBinder;->transact(ILandroid/os/HwParcel;Landroid/os/HwParcel;I)V
+
+    .line 422
+    invoke-virtual {p1}, Landroid/os/HwParcel;->verifySuccess()V
+
+    .line 423
+    invoke-virtual {v0}, Landroid/os/HwParcel;->releaseTemporaryStorage()V
+
+    .line 425
+    invoke-virtual {p1}, Landroid/os/HwParcel;->readInt32()I
+
+    move-result p2
+    :try_end_27
+    .catchall {:try_start_15 .. :try_end_27} :catchall_2c
+
+    .line 426
+    nop
+
+    .line 428
+    invoke-virtual {p1}, Landroid/os/HwParcel;->release()V
+
+    .line 426
+    return p2
+
+    .line 428
+    :catchall_2c
+    move-exception p2
+
+    invoke-virtual {p1}, Landroid/os/HwParcel;->release()V
+
+    throw p2
+.end method
+
+.method public setActiveGroup(ILjava/lang/String;)I
+    .registers 6
+    .annotation system Ldalvik/annotation/Throws;
+        value = {
+            Landroid/os/RemoteException;
+        }
+    .end annotation
+
+    .line 435
+    new-instance v0, Landroid/os/HwParcel;
+
+    invoke-direct {v0}, Landroid/os/HwParcel;-><init>()V
+
+    .line 436
+    const-string v1, "android.hardware.biometrics.fingerprint@2.1::IBiometricsFingerprint"
+
+    invoke-virtual {v0, v1}, Landroid/os/HwParcel;->writeInterfaceToken(Ljava/lang/String;)V
+
+    .line 437
+    invoke-virtual {v0, p1}, Landroid/os/HwParcel;->writeInt32(I)V
+
+    .line 438
+    invoke-virtual {v0, p2}, Landroid/os/HwParcel;->writeString(Ljava/lang/String;)V
+
+    .line 440
+    new-instance p1, Landroid/os/HwParcel;
+
+    invoke-direct {p1}, Landroid/os/HwParcel;-><init>()V
+
+    .line 442
+    :try_start_15
+    iget-object p2, p0, Landroid/hardware/biometrics/fingerprint/V2_1/IBiometricsFingerprint$Proxy;->mRemote:Landroid/os/IHwBinder;
+
+    const/16 v1, 0x9
+
+    const/4 v2, 0x0
+
+    invoke-interface {p2, v1, v0, p1, v2}, Landroid/os/IHwBinder;->transact(ILandroid/os/HwParcel;Landroid/os/HwParcel;I)V
+
+    .line 443
+    invoke-virtual {p1}, Landroid/os/HwParcel;->verifySuccess()V
+
+    .line 444
+    invoke-virtual {v0}, Landroid/os/HwParcel;->releaseTemporaryStorage()V
+
+    .line 446
+    invoke-virtual {p1}, Landroid/os/HwParcel;->readInt32()I
+
+    move-result p2
+    :try_end_27
+    .catchall {:try_start_15 .. :try_end_27} :catchall_2c
+
+    .line 447
+    nop
+
+    .line 449
+    invoke-virtual {p1}, Landroid/os/HwParcel;->release()V
+
+    .line 447
+    return p2
+
+    .line 449
+    :catchall_2c
+    move-exception p2
+
+    invoke-virtual {p1}, Landroid/os/HwParcel;->release()V
+
+    throw p2
+.end method
+
+.method public setHALInstrumentation()V
+    .registers 6
+    .annotation system Ldalvik/annotation/Throws;
+        value = {
+            Landroid/os/RemoteException;
+        }
+    .end annotation
+
+    .line 573
+    new-instance v0, Landroid/os/HwParcel;
+
+    invoke-direct {v0}, Landroid/os/HwParcel;-><init>()V
+
+    .line 574
+    const-string v1, "android.hidl.base@1.0::IBase"
+
+    invoke-virtual {v0, v1}, Landroid/os/HwParcel;->writeInterfaceToken(Ljava/lang/String;)V
+
+    .line 576
+    new-instance v1, Landroid/os/HwParcel;
+
+    invoke-direct {v1}, Landroid/os/HwParcel;-><init>()V
+
+    .line 578
+    :try_start_f
+    iget-object v2, p0, Landroid/hardware/biometrics/fingerprint/V2_1/IBiometricsFingerprint$Proxy;->mRemote:Landroid/os/IHwBinder;
+
+    const v3, 0xf494e54
+
+    const/4 v4, 0x1
+
+    invoke-interface {v2, v3, v0, v1, v4}, Landroid/os/IHwBinder;->transact(ILandroid/os/HwParcel;Landroid/os/HwParcel;I)V
+
+    .line 579
+    invoke-virtual {v0}, Landroid/os/HwParcel;->releaseTemporaryStorage()V
+    :try_end_1b
+    .catchall {:try_start_f .. :try_end_1b} :catchall_20
+
+    .line 581
+    invoke-virtual {v1}, Landroid/os/HwParcel;->release()V
+
+    .line 582
+    nop
+
+    .line 583
+    return-void
+
+    .line 581
+    :catchall_20
+    move-exception v0
+
+    invoke-virtual {v1}, Landroid/os/HwParcel;->release()V
+
+    throw v0
+.end method
+
+.method public setNotify(Landroid/hardware/biometrics/fingerprint/V2_1/IBiometricsFingerprintClientCallback;)J
+    .registers 6
+    .annotation system Ldalvik/annotation/Throws;
+        value = {
+            Landroid/os/RemoteException;
+        }
+    .end annotation
+
+    .line 263
+    new-instance v0, Landroid/os/HwParcel;
+
+    invoke-direct {v0}, Landroid/os/HwParcel;-><init>()V
+
+    .line 264
+    const-string v1, "android.hardware.biometrics.fingerprint@2.1::IBiometricsFingerprint"
+
+    invoke-virtual {v0, v1}, Landroid/os/HwParcel;->writeInterfaceToken(Ljava/lang/String;)V
+
+    .line 265
+    if-nez p1, :cond_e
+
+    const/4 p1, 0x0
+
+    goto :goto_12
+
+    :cond_e
+    invoke-interface {p1}, Landroid/hardware/biometrics/fingerprint/V2_1/IBiometricsFingerprintClientCallback;->asBinder()Landroid/os/IHwBinder;
+
+    move-result-object p1
+
+    :goto_12
+    invoke-virtual {v0, p1}, Landroid/os/HwParcel;->writeStrongBinder(Landroid/os/IHwBinder;)V
+
+    .line 267
+    new-instance p1, Landroid/os/HwParcel;
+
+    invoke-direct {p1}, Landroid/os/HwParcel;-><init>()V
+
+    .line 269
+    :try_start_1a
+    iget-object v1, p0, Landroid/hardware/biometrics/fingerprint/V2_1/IBiometricsFingerprint$Proxy;->mRemote:Landroid/os/IHwBinder;
+
+    const/4 v2, 0x1
+
+    const/4 v3, 0x0
+
+    invoke-interface {v1, v2, v0, p1, v3}, Landroid/os/IHwBinder;->transact(ILandroid/os/HwParcel;Landroid/os/HwParcel;I)V
+
+    .line 270
+    invoke-virtual {p1}, Landroid/os/HwParcel;->verifySuccess()V
+
+    .line 271
+    invoke-virtual {v0}, Landroid/os/HwParcel;->releaseTemporaryStorage()V
+
+    .line 273
+    invoke-virtual {p1}, Landroid/os/HwParcel;->readInt64()J
+
+    move-result-wide v0
+    :try_end_2b
+    .catchall {:try_start_1a .. :try_end_2b} :catchall_30
+
+    .line 274
+    nop
+
+    .line 276
+    invoke-virtual {p1}, Landroid/os/HwParcel;->release()V
+
+    .line 274
+    return-wide v0
+
+    .line 276
+    :catchall_30
+    move-exception v0
+
+    invoke-virtual {p1}, Landroid/os/HwParcel;->release()V
+
+    throw v0
+.end method
+
+.method public toString()Ljava/lang/String;
+    .registers 3
+
+    .line 242
+    :try_start_0
+    new-instance v0, Ljava/lang/StringBuilder;
+
+    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
+
+    invoke-virtual {p0}, Landroid/hardware/biometrics/fingerprint/V2_1/IBiometricsFingerprint$Proxy;->interfaceDescriptor()Ljava/lang/String;
+
+    move-result-object v1
+
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    const-string v1, "@Proxy"
+
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v0
+    :try_end_15
+    .catch Landroid/os/RemoteException; {:try_start_0 .. :try_end_15} :catch_16
+
+    return-object v0
+
+    .line 243
+    :catch_16
+    move-exception v0
+
+    .line 246
+    const-string v0, "[class or subclass of android.hardware.biometrics.fingerprint@2.1::IBiometricsFingerprint]@Proxy"
+
+    return-object v0
+.end method
+
+.method public unlinkToDeath(Landroid/os/IHwBinder$DeathRecipient;)Z
+    .registers 3
+    .annotation system Ldalvik/annotation/Throws;
+        value = {
+            Landroid/os/RemoteException;
+        }
+    .end annotation
+
+    .line 644
+    iget-object v0, p0, Landroid/hardware/biometrics/fingerprint/V2_1/IBiometricsFingerprint$Proxy;->mRemote:Landroid/os/IHwBinder;
+
+    invoke-interface {v0, p1}, Landroid/os/IHwBinder;->unlinkToDeath(Landroid/os/IHwBinder$DeathRecipient;)Z
+
+    move-result p1
+
+    return p1
+.end method

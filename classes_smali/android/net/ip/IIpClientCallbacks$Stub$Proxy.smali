@@ -1,0 +1,1239 @@
+.class Landroid/net/ip/IIpClientCallbacks$Stub$Proxy;
+.super Ljava/lang/Object;
+.source "IIpClientCallbacks.java"
+
+# interfaces
+.implements Landroid/net/ip/IIpClientCallbacks;
+
+
+# annotations
+.annotation system Ldalvik/annotation/EnclosingClass;
+    value = Landroid/net/ip/IIpClientCallbacks$Stub;
+.end annotation
+
+.annotation system Ldalvik/annotation/InnerClass;
+    accessFlags = 0xa
+    name = "Proxy"
+.end annotation
+
+
+# static fields
+.field public static sDefaultImpl:Landroid/net/ip/IIpClientCallbacks;
+
+
+# instance fields
+.field private mCachedVersion:I
+
+.field private mRemote:Landroid/os/IBinder;
+
+
+# direct methods
+.method constructor <init>(Landroid/os/IBinder;)V
+    .registers 3
+
+    .line 236
+    invoke-direct {p0}, Ljava/lang/Object;-><init>()V
+
+    .line 239
+    const/4 v0, -0x1
+
+    iput v0, p0, Landroid/net/ip/IIpClientCallbacks$Stub$Proxy;->mCachedVersion:I
+
+    .line 237
+    iput-object p1, p0, Landroid/net/ip/IIpClientCallbacks$Stub$Proxy;->mRemote:Landroid/os/IBinder;
+
+    .line 238
+    return-void
+.end method
+
+
+# virtual methods
+.method public asBinder()Landroid/os/IBinder;
+    .registers 2
+
+    .line 242
+    iget-object v0, p0, Landroid/net/ip/IIpClientCallbacks$Stub$Proxy;->mRemote:Landroid/os/IBinder;
+
+    return-object v0
+.end method
+
+.method public getInterfaceDescriptor()Ljava/lang/String;
+    .registers 2
+
+    .line 246
+    const-string v0, "android.net.ip.IIpClientCallbacks"
+
+    return-object v0
+.end method
+
+.method public getInterfaceVersion()I
+    .registers 6
+    .annotation system Ldalvik/annotation/Throws;
+        value = {
+            Landroid/os/RemoteException;
+        }
+    .end annotation
+
+    .line 478
+    iget v0, p0, Landroid/net/ip/IIpClientCallbacks$Stub$Proxy;->mCachedVersion:I
+
+    const/4 v1, -0x1
+
+    if-ne v0, v1, :cond_33
+
+    .line 479
+    invoke-static {}, Landroid/os/Parcel;->obtain()Landroid/os/Parcel;
+
+    move-result-object v0
+
+    .line 480
+    invoke-static {}, Landroid/os/Parcel;->obtain()Landroid/os/Parcel;
+
+    move-result-object v1
+
+    .line 482
+    :try_start_d
+    const-string v2, "android.net.ip.IIpClientCallbacks"
+
+    invoke-virtual {v0, v2}, Landroid/os/Parcel;->writeInterfaceToken(Ljava/lang/String;)V
+
+    .line 483
+    iget-object v2, p0, Landroid/net/ip/IIpClientCallbacks$Stub$Proxy;->mRemote:Landroid/os/IBinder;
+
+    const v3, 0xffffff
+
+    const/4 v4, 0x0
+
+    invoke-interface {v2, v3, v0, v1, v4}, Landroid/os/IBinder;->transact(ILandroid/os/Parcel;Landroid/os/Parcel;I)Z
+
+    .line 484
+    invoke-virtual {v1}, Landroid/os/Parcel;->readException()V
+
+    .line 485
+    invoke-virtual {v1}, Landroid/os/Parcel;->readInt()I
+
+    move-result v2
+
+    iput v2, p0, Landroid/net/ip/IIpClientCallbacks$Stub$Proxy;->mCachedVersion:I
+    :try_end_24
+    .catchall {:try_start_d .. :try_end_24} :catchall_2b
+
+    .line 487
+    invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
+
+    .line 488
+    invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
+
+    .line 489
+    goto :goto_33
+
+    .line 487
+    :catchall_2b
+    move-exception v2
+
+    invoke-virtual {v1}, Landroid/os/Parcel;->recycle()V
+
+    .line 488
+    invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
+
+    throw v2
+
+    .line 491
+    :cond_33
+    :goto_33
+    iget v0, p0, Landroid/net/ip/IIpClientCallbacks$Stub$Proxy;->mCachedVersion:I
+
+    return v0
+.end method
+
+.method public installPacketFilter([B)V
+    .registers 7
+    .annotation system Ldalvik/annotation/Throws;
+        value = {
+            Landroid/os/RemoteException;
+        }
+    .end annotation
+
+    .line 415
+    invoke-static {}, Landroid/os/Parcel;->obtain()Landroid/os/Parcel;
+
+    move-result-object v0
+
+    .line 417
+    :try_start_4
+    const-string v1, "android.net.ip.IIpClientCallbacks"
+
+    invoke-virtual {v0, v1}, Landroid/os/Parcel;->writeInterfaceToken(Ljava/lang/String;)V
+
+    .line 418
+    invoke-virtual {v0, p1}, Landroid/os/Parcel;->writeByteArray([B)V
+
+    .line 419
+    iget-object v1, p0, Landroid/net/ip/IIpClientCallbacks$Stub$Proxy;->mRemote:Landroid/os/IBinder;
+
+    const/16 v2, 0xa
+
+    const/4 v3, 0x0
+
+    const/4 v4, 0x1
+
+    invoke-interface {v1, v2, v0, v3, v4}, Landroid/os/IBinder;->transact(ILandroid/os/Parcel;Landroid/os/Parcel;I)Z
+
+    move-result v1
+
+    .line 420
+    if-nez v1, :cond_29
+
+    invoke-static {}, Landroid/net/ip/IIpClientCallbacks$Stub;->getDefaultImpl()Landroid/net/ip/IIpClientCallbacks;
+
+    move-result-object v1
+
+    if-eqz v1, :cond_29
+
+    .line 421
+    invoke-static {}, Landroid/net/ip/IIpClientCallbacks$Stub;->getDefaultImpl()Landroid/net/ip/IIpClientCallbacks;
+
+    move-result-object v1
+
+    invoke-interface {v1, p1}, Landroid/net/ip/IIpClientCallbacks;->installPacketFilter([B)V
+    :try_end_25
+    .catchall {:try_start_4 .. :try_end_25} :catchall_2e
+
+    .line 426
+    invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
+
+    .line 422
+    return-void
+
+    .line 426
+    :cond_29
+    invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
+
+    .line 427
+    nop
+
+    .line 428
+    return-void
+
+    .line 426
+    :catchall_2e
+    move-exception p1
+
+    invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
+
+    throw p1
+.end method
+
+.method public onIpClientCreated(Landroid/net/ip/IIpClient;)V
+    .registers 6
+    .annotation system Ldalvik/annotation/Throws;
+        value = {
+            Landroid/os/RemoteException;
+        }
+    .end annotation
+
+    .line 250
+    invoke-static {}, Landroid/os/Parcel;->obtain()Landroid/os/Parcel;
+
+    move-result-object v0
+
+    .line 252
+    :try_start_4
+    const-string v1, "android.net.ip.IIpClientCallbacks"
+
+    invoke-virtual {v0, v1}, Landroid/os/Parcel;->writeInterfaceToken(Ljava/lang/String;)V
+
+    .line 253
+    const/4 v1, 0x0
+
+    if-eqz p1, :cond_11
+
+    invoke-interface {p1}, Landroid/net/ip/IIpClient;->asBinder()Landroid/os/IBinder;
+
+    move-result-object v2
+
+    goto :goto_12
+
+    :cond_11
+    move-object v2, v1
+
+    :goto_12
+    invoke-virtual {v0, v2}, Landroid/os/Parcel;->writeStrongBinder(Landroid/os/IBinder;)V
+
+    .line 254
+    iget-object v2, p0, Landroid/net/ip/IIpClientCallbacks$Stub$Proxy;->mRemote:Landroid/os/IBinder;
+
+    const/4 v3, 0x1
+
+    invoke-interface {v2, v3, v0, v1, v3}, Landroid/os/IBinder;->transact(ILandroid/os/Parcel;Landroid/os/Parcel;I)Z
+
+    move-result v1
+
+    .line 255
+    if-nez v1, :cond_2f
+
+    invoke-static {}, Landroid/net/ip/IIpClientCallbacks$Stub;->getDefaultImpl()Landroid/net/ip/IIpClientCallbacks;
+
+    move-result-object v1
+
+    if-eqz v1, :cond_2f
+
+    .line 256
+    invoke-static {}, Landroid/net/ip/IIpClientCallbacks$Stub;->getDefaultImpl()Landroid/net/ip/IIpClientCallbacks;
+
+    move-result-object v1
+
+    invoke-interface {v1, p1}, Landroid/net/ip/IIpClientCallbacks;->onIpClientCreated(Landroid/net/ip/IIpClient;)V
+    :try_end_2b
+    .catchall {:try_start_4 .. :try_end_2b} :catchall_34
+
+    .line 261
+    invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
+
+    .line 257
+    return-void
+
+    .line 261
+    :cond_2f
+    invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
+
+    .line 262
+    nop
+
+    .line 263
+    return-void
+
+    .line 261
+    :catchall_34
+    move-exception p1
+
+    invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
+
+    throw p1
+.end method
+
+.method public onLinkPropertiesChange(Landroid/net/LinkProperties;)V
+    .registers 7
+    .annotation system Ldalvik/annotation/Throws;
+        value = {
+            Landroid/os/RemoteException;
+        }
+    .end annotation
+
+    .line 362
+    invoke-static {}, Landroid/os/Parcel;->obtain()Landroid/os/Parcel;
+
+    move-result-object v0
+
+    .line 364
+    :try_start_4
+    const-string v1, "android.net.ip.IIpClientCallbacks"
+
+    invoke-virtual {v0, v1}, Landroid/os/Parcel;->writeInterfaceToken(Ljava/lang/String;)V
+
+    .line 365
+    const/4 v1, 0x1
+
+    const/4 v2, 0x0
+
+    if-eqz p1, :cond_14
+
+    .line 366
+    invoke-virtual {v0, v1}, Landroid/os/Parcel;->writeInt(I)V
+
+    .line 367
+    invoke-virtual {p1, v0, v2}, Landroid/net/LinkProperties;->writeToParcel(Landroid/os/Parcel;I)V
+
+    goto :goto_17
+
+    .line 370
+    :cond_14
+    invoke-virtual {v0, v2}, Landroid/os/Parcel;->writeInt(I)V
+
+    .line 372
+    :goto_17
+    iget-object v2, p0, Landroid/net/ip/IIpClientCallbacks$Stub$Proxy;->mRemote:Landroid/os/IBinder;
+
+    const/4 v3, 0x7
+
+    const/4 v4, 0x0
+
+    invoke-interface {v2, v3, v0, v4, v1}, Landroid/os/IBinder;->transact(ILandroid/os/Parcel;Landroid/os/Parcel;I)Z
+
+    move-result v1
+
+    .line 373
+    if-nez v1, :cond_32
+
+    invoke-static {}, Landroid/net/ip/IIpClientCallbacks$Stub;->getDefaultImpl()Landroid/net/ip/IIpClientCallbacks;
+
+    move-result-object v1
+
+    if-eqz v1, :cond_32
+
+    .line 374
+    invoke-static {}, Landroid/net/ip/IIpClientCallbacks$Stub;->getDefaultImpl()Landroid/net/ip/IIpClientCallbacks;
+
+    move-result-object v1
+
+    invoke-interface {v1, p1}, Landroid/net/ip/IIpClientCallbacks;->onLinkPropertiesChange(Landroid/net/LinkProperties;)V
+    :try_end_2e
+    .catchall {:try_start_4 .. :try_end_2e} :catchall_37
+
+    .line 379
+    invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
+
+    .line 375
+    return-void
+
+    .line 379
+    :cond_32
+    invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
+
+    .line 380
+    nop
+
+    .line 381
+    return-void
+
+    .line 379
+    :catchall_37
+    move-exception p1
+
+    invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
+
+    throw p1
+.end method
+
+.method public onNewDhcpResults(Landroid/net/DhcpResultsParcelable;)V
+    .registers 7
+    .annotation system Ldalvik/annotation/Throws;
+        value = {
+            Landroid/os/RemoteException;
+        }
+    .end annotation
+
+    .line 296
+    invoke-static {}, Landroid/os/Parcel;->obtain()Landroid/os/Parcel;
+
+    move-result-object v0
+
+    .line 298
+    :try_start_4
+    const-string v1, "android.net.ip.IIpClientCallbacks"
+
+    invoke-virtual {v0, v1}, Landroid/os/Parcel;->writeInterfaceToken(Ljava/lang/String;)V
+
+    .line 299
+    const/4 v1, 0x1
+
+    const/4 v2, 0x0
+
+    if-eqz p1, :cond_14
+
+    .line 300
+    invoke-virtual {v0, v1}, Landroid/os/Parcel;->writeInt(I)V
+
+    .line 301
+    invoke-virtual {p1, v0, v2}, Landroid/net/DhcpResultsParcelable;->writeToParcel(Landroid/os/Parcel;I)V
+
+    goto :goto_17
+
+    .line 304
+    :cond_14
+    invoke-virtual {v0, v2}, Landroid/os/Parcel;->writeInt(I)V
+
+    .line 306
+    :goto_17
+    iget-object v2, p0, Landroid/net/ip/IIpClientCallbacks$Stub$Proxy;->mRemote:Landroid/os/IBinder;
+
+    const/4 v3, 0x4
+
+    const/4 v4, 0x0
+
+    invoke-interface {v2, v3, v0, v4, v1}, Landroid/os/IBinder;->transact(ILandroid/os/Parcel;Landroid/os/Parcel;I)Z
+
+    move-result v1
+
+    .line 307
+    if-nez v1, :cond_32
+
+    invoke-static {}, Landroid/net/ip/IIpClientCallbacks$Stub;->getDefaultImpl()Landroid/net/ip/IIpClientCallbacks;
+
+    move-result-object v1
+
+    if-eqz v1, :cond_32
+
+    .line 308
+    invoke-static {}, Landroid/net/ip/IIpClientCallbacks$Stub;->getDefaultImpl()Landroid/net/ip/IIpClientCallbacks;
+
+    move-result-object v1
+
+    invoke-interface {v1, p1}, Landroid/net/ip/IIpClientCallbacks;->onNewDhcpResults(Landroid/net/DhcpResultsParcelable;)V
+    :try_end_2e
+    .catchall {:try_start_4 .. :try_end_2e} :catchall_37
+
+    .line 313
+    invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
+
+    .line 309
+    return-void
+
+    .line 313
+    :cond_32
+    invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
+
+    .line 314
+    nop
+
+    .line 315
+    return-void
+
+    .line 313
+    :catchall_37
+    move-exception p1
+
+    invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
+
+    throw p1
+.end method
+
+.method public onPostDhcpAction()V
+    .registers 6
+    .annotation system Ldalvik/annotation/Throws;
+        value = {
+            Landroid/os/RemoteException;
+        }
+    .end annotation
+
+    .line 281
+    invoke-static {}, Landroid/os/Parcel;->obtain()Landroid/os/Parcel;
+
+    move-result-object v0
+
+    .line 283
+    :try_start_4
+    const-string v1, "android.net.ip.IIpClientCallbacks"
+
+    invoke-virtual {v0, v1}, Landroid/os/Parcel;->writeInterfaceToken(Ljava/lang/String;)V
+
+    .line 284
+    iget-object v1, p0, Landroid/net/ip/IIpClientCallbacks$Stub$Proxy;->mRemote:Landroid/os/IBinder;
+
+    const/4 v2, 0x3
+
+    const/4 v3, 0x0
+
+    const/4 v4, 0x1
+
+    invoke-interface {v1, v2, v0, v3, v4}, Landroid/os/IBinder;->transact(ILandroid/os/Parcel;Landroid/os/Parcel;I)Z
+
+    move-result v1
+
+    .line 285
+    if-nez v1, :cond_25
+
+    invoke-static {}, Landroid/net/ip/IIpClientCallbacks$Stub;->getDefaultImpl()Landroid/net/ip/IIpClientCallbacks;
+
+    move-result-object v1
+
+    if-eqz v1, :cond_25
+
+    .line 286
+    invoke-static {}, Landroid/net/ip/IIpClientCallbacks$Stub;->getDefaultImpl()Landroid/net/ip/IIpClientCallbacks;
+
+    move-result-object v1
+
+    invoke-interface {v1}, Landroid/net/ip/IIpClientCallbacks;->onPostDhcpAction()V
+    :try_end_21
+    .catchall {:try_start_4 .. :try_end_21} :catchall_2a
+
+    .line 291
+    invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
+
+    .line 287
+    return-void
+
+    .line 291
+    :cond_25
+    invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
+
+    .line 292
+    nop
+
+    .line 293
+    return-void
+
+    .line 291
+    :catchall_2a
+    move-exception v1
+
+    invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
+
+    throw v1
+.end method
+
+.method public onPreDhcpAction()V
+    .registers 6
+    .annotation system Ldalvik/annotation/Throws;
+        value = {
+            Landroid/os/RemoteException;
+        }
+    .end annotation
+
+    .line 266
+    invoke-static {}, Landroid/os/Parcel;->obtain()Landroid/os/Parcel;
+
+    move-result-object v0
+
+    .line 268
+    :try_start_4
+    const-string v1, "android.net.ip.IIpClientCallbacks"
+
+    invoke-virtual {v0, v1}, Landroid/os/Parcel;->writeInterfaceToken(Ljava/lang/String;)V
+
+    .line 269
+    iget-object v1, p0, Landroid/net/ip/IIpClientCallbacks$Stub$Proxy;->mRemote:Landroid/os/IBinder;
+
+    const/4 v2, 0x2
+
+    const/4 v3, 0x0
+
+    const/4 v4, 0x1
+
+    invoke-interface {v1, v2, v0, v3, v4}, Landroid/os/IBinder;->transact(ILandroid/os/Parcel;Landroid/os/Parcel;I)Z
+
+    move-result v1
+
+    .line 270
+    if-nez v1, :cond_25
+
+    invoke-static {}, Landroid/net/ip/IIpClientCallbacks$Stub;->getDefaultImpl()Landroid/net/ip/IIpClientCallbacks;
+
+    move-result-object v1
+
+    if-eqz v1, :cond_25
+
+    .line 271
+    invoke-static {}, Landroid/net/ip/IIpClientCallbacks$Stub;->getDefaultImpl()Landroid/net/ip/IIpClientCallbacks;
+
+    move-result-object v1
+
+    invoke-interface {v1}, Landroid/net/ip/IIpClientCallbacks;->onPreDhcpAction()V
+    :try_end_21
+    .catchall {:try_start_4 .. :try_end_21} :catchall_2a
+
+    .line 276
+    invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
+
+    .line 272
+    return-void
+
+    .line 276
+    :cond_25
+    invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
+
+    .line 277
+    nop
+
+    .line 278
+    return-void
+
+    .line 276
+    :catchall_2a
+    move-exception v1
+
+    invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
+
+    throw v1
+.end method
+
+.method public onProvisioningFailure(Landroid/net/LinkProperties;)V
+    .registers 7
+    .annotation system Ldalvik/annotation/Throws;
+        value = {
+            Landroid/os/RemoteException;
+        }
+    .end annotation
+
+    .line 340
+    invoke-static {}, Landroid/os/Parcel;->obtain()Landroid/os/Parcel;
+
+    move-result-object v0
+
+    .line 342
+    :try_start_4
+    const-string v1, "android.net.ip.IIpClientCallbacks"
+
+    invoke-virtual {v0, v1}, Landroid/os/Parcel;->writeInterfaceToken(Ljava/lang/String;)V
+
+    .line 343
+    const/4 v1, 0x1
+
+    const/4 v2, 0x0
+
+    if-eqz p1, :cond_14
+
+    .line 344
+    invoke-virtual {v0, v1}, Landroid/os/Parcel;->writeInt(I)V
+
+    .line 345
+    invoke-virtual {p1, v0, v2}, Landroid/net/LinkProperties;->writeToParcel(Landroid/os/Parcel;I)V
+
+    goto :goto_17
+
+    .line 348
+    :cond_14
+    invoke-virtual {v0, v2}, Landroid/os/Parcel;->writeInt(I)V
+
+    .line 350
+    :goto_17
+    iget-object v2, p0, Landroid/net/ip/IIpClientCallbacks$Stub$Proxy;->mRemote:Landroid/os/IBinder;
+
+    const/4 v3, 0x6
+
+    const/4 v4, 0x0
+
+    invoke-interface {v2, v3, v0, v4, v1}, Landroid/os/IBinder;->transact(ILandroid/os/Parcel;Landroid/os/Parcel;I)Z
+
+    move-result v1
+
+    .line 351
+    if-nez v1, :cond_32
+
+    invoke-static {}, Landroid/net/ip/IIpClientCallbacks$Stub;->getDefaultImpl()Landroid/net/ip/IIpClientCallbacks;
+
+    move-result-object v1
+
+    if-eqz v1, :cond_32
+
+    .line 352
+    invoke-static {}, Landroid/net/ip/IIpClientCallbacks$Stub;->getDefaultImpl()Landroid/net/ip/IIpClientCallbacks;
+
+    move-result-object v1
+
+    invoke-interface {v1, p1}, Landroid/net/ip/IIpClientCallbacks;->onProvisioningFailure(Landroid/net/LinkProperties;)V
+    :try_end_2e
+    .catchall {:try_start_4 .. :try_end_2e} :catchall_37
+
+    .line 357
+    invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
+
+    .line 353
+    return-void
+
+    .line 357
+    :cond_32
+    invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
+
+    .line 358
+    nop
+
+    .line 359
+    return-void
+
+    .line 357
+    :catchall_37
+    move-exception p1
+
+    invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
+
+    throw p1
+.end method
+
+.method public onProvisioningSuccess(Landroid/net/LinkProperties;)V
+    .registers 7
+    .annotation system Ldalvik/annotation/Throws;
+        value = {
+            Landroid/os/RemoteException;
+        }
+    .end annotation
+
+    .line 318
+    invoke-static {}, Landroid/os/Parcel;->obtain()Landroid/os/Parcel;
+
+    move-result-object v0
+
+    .line 320
+    :try_start_4
+    const-string v1, "android.net.ip.IIpClientCallbacks"
+
+    invoke-virtual {v0, v1}, Landroid/os/Parcel;->writeInterfaceToken(Ljava/lang/String;)V
+
+    .line 321
+    const/4 v1, 0x1
+
+    const/4 v2, 0x0
+
+    if-eqz p1, :cond_14
+
+    .line 322
+    invoke-virtual {v0, v1}, Landroid/os/Parcel;->writeInt(I)V
+
+    .line 323
+    invoke-virtual {p1, v0, v2}, Landroid/net/LinkProperties;->writeToParcel(Landroid/os/Parcel;I)V
+
+    goto :goto_17
+
+    .line 326
+    :cond_14
+    invoke-virtual {v0, v2}, Landroid/os/Parcel;->writeInt(I)V
+
+    .line 328
+    :goto_17
+    iget-object v2, p0, Landroid/net/ip/IIpClientCallbacks$Stub$Proxy;->mRemote:Landroid/os/IBinder;
+
+    const/4 v3, 0x5
+
+    const/4 v4, 0x0
+
+    invoke-interface {v2, v3, v0, v4, v1}, Landroid/os/IBinder;->transact(ILandroid/os/Parcel;Landroid/os/Parcel;I)Z
+
+    move-result v1
+
+    .line 329
+    if-nez v1, :cond_32
+
+    invoke-static {}, Landroid/net/ip/IIpClientCallbacks$Stub;->getDefaultImpl()Landroid/net/ip/IIpClientCallbacks;
+
+    move-result-object v1
+
+    if-eqz v1, :cond_32
+
+    .line 330
+    invoke-static {}, Landroid/net/ip/IIpClientCallbacks$Stub;->getDefaultImpl()Landroid/net/ip/IIpClientCallbacks;
+
+    move-result-object v1
+
+    invoke-interface {v1, p1}, Landroid/net/ip/IIpClientCallbacks;->onProvisioningSuccess(Landroid/net/LinkProperties;)V
+    :try_end_2e
+    .catchall {:try_start_4 .. :try_end_2e} :catchall_37
+
+    .line 335
+    invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
+
+    .line 331
+    return-void
+
+    .line 335
+    :cond_32
+    invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
+
+    .line 336
+    nop
+
+    .line 337
+    return-void
+
+    .line 335
+    :catchall_37
+    move-exception p1
+
+    invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
+
+    throw p1
+.end method
+
+.method public onQuit()V
+    .registers 6
+    .annotation system Ldalvik/annotation/Throws;
+        value = {
+            Landroid/os/RemoteException;
+        }
+    .end annotation
+
+    .line 400
+    invoke-static {}, Landroid/os/Parcel;->obtain()Landroid/os/Parcel;
+
+    move-result-object v0
+
+    .line 402
+    :try_start_4
+    const-string v1, "android.net.ip.IIpClientCallbacks"
+
+    invoke-virtual {v0, v1}, Landroid/os/Parcel;->writeInterfaceToken(Ljava/lang/String;)V
+
+    .line 403
+    iget-object v1, p0, Landroid/net/ip/IIpClientCallbacks$Stub$Proxy;->mRemote:Landroid/os/IBinder;
+
+    const/16 v2, 0x9
+
+    const/4 v3, 0x0
+
+    const/4 v4, 0x1
+
+    invoke-interface {v1, v2, v0, v3, v4}, Landroid/os/IBinder;->transact(ILandroid/os/Parcel;Landroid/os/Parcel;I)Z
+
+    move-result v1
+
+    .line 404
+    if-nez v1, :cond_26
+
+    invoke-static {}, Landroid/net/ip/IIpClientCallbacks$Stub;->getDefaultImpl()Landroid/net/ip/IIpClientCallbacks;
+
+    move-result-object v1
+
+    if-eqz v1, :cond_26
+
+    .line 405
+    invoke-static {}, Landroid/net/ip/IIpClientCallbacks$Stub;->getDefaultImpl()Landroid/net/ip/IIpClientCallbacks;
+
+    move-result-object v1
+
+    invoke-interface {v1}, Landroid/net/ip/IIpClientCallbacks;->onQuit()V
+    :try_end_22
+    .catchall {:try_start_4 .. :try_end_22} :catchall_2b
+
+    .line 410
+    invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
+
+    .line 406
+    return-void
+
+    .line 410
+    :cond_26
+    invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
+
+    .line 411
+    nop
+
+    .line 412
+    return-void
+
+    .line 410
+    :catchall_2b
+    move-exception v1
+
+    invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
+
+    throw v1
+.end method
+
+.method public onReachabilityLost(Ljava/lang/String;)V
+    .registers 7
+    .annotation system Ldalvik/annotation/Throws;
+        value = {
+            Landroid/os/RemoteException;
+        }
+    .end annotation
+
+    .line 384
+    invoke-static {}, Landroid/os/Parcel;->obtain()Landroid/os/Parcel;
+
+    move-result-object v0
+
+    .line 386
+    :try_start_4
+    const-string v1, "android.net.ip.IIpClientCallbacks"
+
+    invoke-virtual {v0, v1}, Landroid/os/Parcel;->writeInterfaceToken(Ljava/lang/String;)V
+
+    .line 387
+    invoke-virtual {v0, p1}, Landroid/os/Parcel;->writeString(Ljava/lang/String;)V
+
+    .line 388
+    iget-object v1, p0, Landroid/net/ip/IIpClientCallbacks$Stub$Proxy;->mRemote:Landroid/os/IBinder;
+
+    const/16 v2, 0x8
+
+    const/4 v3, 0x0
+
+    const/4 v4, 0x1
+
+    invoke-interface {v1, v2, v0, v3, v4}, Landroid/os/IBinder;->transact(ILandroid/os/Parcel;Landroid/os/Parcel;I)Z
+
+    move-result v1
+
+    .line 389
+    if-nez v1, :cond_29
+
+    invoke-static {}, Landroid/net/ip/IIpClientCallbacks$Stub;->getDefaultImpl()Landroid/net/ip/IIpClientCallbacks;
+
+    move-result-object v1
+
+    if-eqz v1, :cond_29
+
+    .line 390
+    invoke-static {}, Landroid/net/ip/IIpClientCallbacks$Stub;->getDefaultImpl()Landroid/net/ip/IIpClientCallbacks;
+
+    move-result-object v1
+
+    invoke-interface {v1, p1}, Landroid/net/ip/IIpClientCallbacks;->onReachabilityLost(Ljava/lang/String;)V
+    :try_end_25
+    .catchall {:try_start_4 .. :try_end_25} :catchall_2e
+
+    .line 395
+    invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
+
+    .line 391
+    return-void
+
+    .line 395
+    :cond_29
+    invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
+
+    .line 396
+    nop
+
+    .line 397
+    return-void
+
+    .line 395
+    :catchall_2e
+    move-exception p1
+
+    invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
+
+    throw p1
+.end method
+
+.method public setFallbackMulticastFilter(Z)V
+    .registers 7
+    .annotation system Ldalvik/annotation/Throws;
+        value = {
+            Landroid/os/RemoteException;
+        }
+    .end annotation
+
+    .line 446
+    invoke-static {}, Landroid/os/Parcel;->obtain()Landroid/os/Parcel;
+
+    move-result-object v0
+
+    .line 448
+    :try_start_4
+    const-string v1, "android.net.ip.IIpClientCallbacks"
+
+    invoke-virtual {v0, v1}, Landroid/os/Parcel;->writeInterfaceToken(Ljava/lang/String;)V
+
+    .line 449
+    const/4 v1, 0x1
+
+    if-eqz p1, :cond_e
+
+    move v2, v1
+
+    goto :goto_f
+
+    :cond_e
+    const/4 v2, 0x0
+
+    :goto_f
+    invoke-virtual {v0, v2}, Landroid/os/Parcel;->writeInt(I)V
+
+    .line 450
+    iget-object v2, p0, Landroid/net/ip/IIpClientCallbacks$Stub$Proxy;->mRemote:Landroid/os/IBinder;
+
+    const/16 v3, 0xc
+
+    const/4 v4, 0x0
+
+    invoke-interface {v2, v3, v0, v4, v1}, Landroid/os/IBinder;->transact(ILandroid/os/Parcel;Landroid/os/Parcel;I)Z
+
+    move-result v1
+
+    .line 451
+    if-nez v1, :cond_2e
+
+    invoke-static {}, Landroid/net/ip/IIpClientCallbacks$Stub;->getDefaultImpl()Landroid/net/ip/IIpClientCallbacks;
+
+    move-result-object v1
+
+    if-eqz v1, :cond_2e
+
+    .line 452
+    invoke-static {}, Landroid/net/ip/IIpClientCallbacks$Stub;->getDefaultImpl()Landroid/net/ip/IIpClientCallbacks;
+
+    move-result-object v1
+
+    invoke-interface {v1, p1}, Landroid/net/ip/IIpClientCallbacks;->setFallbackMulticastFilter(Z)V
+    :try_end_2a
+    .catchall {:try_start_4 .. :try_end_2a} :catchall_33
+
+    .line 457
+    invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
+
+    .line 453
+    return-void
+
+    .line 457
+    :cond_2e
+    invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
+
+    .line 458
+    nop
+
+    .line 459
+    return-void
+
+    .line 457
+    :catchall_33
+    move-exception p1
+
+    invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
+
+    throw p1
+.end method
+
+.method public setNeighborDiscoveryOffload(Z)V
+    .registers 7
+    .annotation system Ldalvik/annotation/Throws;
+        value = {
+            Landroid/os/RemoteException;
+        }
+    .end annotation
+
+    .line 462
+    invoke-static {}, Landroid/os/Parcel;->obtain()Landroid/os/Parcel;
+
+    move-result-object v0
+
+    .line 464
+    :try_start_4
+    const-string v1, "android.net.ip.IIpClientCallbacks"
+
+    invoke-virtual {v0, v1}, Landroid/os/Parcel;->writeInterfaceToken(Ljava/lang/String;)V
+
+    .line 465
+    const/4 v1, 0x1
+
+    if-eqz p1, :cond_e
+
+    move v2, v1
+
+    goto :goto_f
+
+    :cond_e
+    const/4 v2, 0x0
+
+    :goto_f
+    invoke-virtual {v0, v2}, Landroid/os/Parcel;->writeInt(I)V
+
+    .line 466
+    iget-object v2, p0, Landroid/net/ip/IIpClientCallbacks$Stub$Proxy;->mRemote:Landroid/os/IBinder;
+
+    const/16 v3, 0xd
+
+    const/4 v4, 0x0
+
+    invoke-interface {v2, v3, v0, v4, v1}, Landroid/os/IBinder;->transact(ILandroid/os/Parcel;Landroid/os/Parcel;I)Z
+
+    move-result v1
+
+    .line 467
+    if-nez v1, :cond_2e
+
+    invoke-static {}, Landroid/net/ip/IIpClientCallbacks$Stub;->getDefaultImpl()Landroid/net/ip/IIpClientCallbacks;
+
+    move-result-object v1
+
+    if-eqz v1, :cond_2e
+
+    .line 468
+    invoke-static {}, Landroid/net/ip/IIpClientCallbacks$Stub;->getDefaultImpl()Landroid/net/ip/IIpClientCallbacks;
+
+    move-result-object v1
+
+    invoke-interface {v1, p1}, Landroid/net/ip/IIpClientCallbacks;->setNeighborDiscoveryOffload(Z)V
+    :try_end_2a
+    .catchall {:try_start_4 .. :try_end_2a} :catchall_33
+
+    .line 473
+    invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
+
+    .line 469
+    return-void
+
+    .line 473
+    :cond_2e
+    invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
+
+    .line 474
+    nop
+
+    .line 475
+    return-void
+
+    .line 473
+    :catchall_33
+    move-exception p1
+
+    invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
+
+    throw p1
+.end method
+
+.method public startReadPacketFilter()V
+    .registers 6
+    .annotation system Ldalvik/annotation/Throws;
+        value = {
+            Landroid/os/RemoteException;
+        }
+    .end annotation
+
+    .line 431
+    invoke-static {}, Landroid/os/Parcel;->obtain()Landroid/os/Parcel;
+
+    move-result-object v0
+
+    .line 433
+    :try_start_4
+    const-string v1, "android.net.ip.IIpClientCallbacks"
+
+    invoke-virtual {v0, v1}, Landroid/os/Parcel;->writeInterfaceToken(Ljava/lang/String;)V
+
+    .line 434
+    iget-object v1, p0, Landroid/net/ip/IIpClientCallbacks$Stub$Proxy;->mRemote:Landroid/os/IBinder;
+
+    const/16 v2, 0xb
+
+    const/4 v3, 0x0
+
+    const/4 v4, 0x1
+
+    invoke-interface {v1, v2, v0, v3, v4}, Landroid/os/IBinder;->transact(ILandroid/os/Parcel;Landroid/os/Parcel;I)Z
+
+    move-result v1
+
+    .line 435
+    if-nez v1, :cond_26
+
+    invoke-static {}, Landroid/net/ip/IIpClientCallbacks$Stub;->getDefaultImpl()Landroid/net/ip/IIpClientCallbacks;
+
+    move-result-object v1
+
+    if-eqz v1, :cond_26
+
+    .line 436
+    invoke-static {}, Landroid/net/ip/IIpClientCallbacks$Stub;->getDefaultImpl()Landroid/net/ip/IIpClientCallbacks;
+
+    move-result-object v1
+
+    invoke-interface {v1}, Landroid/net/ip/IIpClientCallbacks;->startReadPacketFilter()V
+    :try_end_22
+    .catchall {:try_start_4 .. :try_end_22} :catchall_2b
+
+    .line 441
+    invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
+
+    .line 437
+    return-void
+
+    .line 441
+    :cond_26
+    invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
+
+    .line 442
+    nop
+
+    .line 443
+    return-void
+
+    .line 441
+    :catchall_2b
+    move-exception v1
+
+    invoke-virtual {v0}, Landroid/os/Parcel;->recycle()V
+
+    throw v1
+.end method

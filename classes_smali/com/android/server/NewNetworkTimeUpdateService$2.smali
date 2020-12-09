@@ -1,0 +1,64 @@
+.class Lcom/android/server/NewNetworkTimeUpdateService$2;
+.super Landroid/content/BroadcastReceiver;
+.source "NewNetworkTimeUpdateService.java"
+
+
+# annotations
+.annotation system Ldalvik/annotation/EnclosingClass;
+    value = Lcom/android/server/NewNetworkTimeUpdateService;
+.end annotation
+
+.annotation system Ldalvik/annotation/InnerClass;
+    accessFlags = 0x0
+    name = null
+.end annotation
+
+
+# instance fields
+.field final synthetic this$0:Lcom/android/server/NewNetworkTimeUpdateService;
+
+
+# direct methods
+.method constructor <init>(Lcom/android/server/NewNetworkTimeUpdateService;)V
+    .registers 2
+
+    .line 246
+    iput-object p1, p0, Lcom/android/server/NewNetworkTimeUpdateService$2;->this$0:Lcom/android/server/NewNetworkTimeUpdateService;
+
+    invoke-direct {p0}, Landroid/content/BroadcastReceiver;-><init>()V
+
+    return-void
+.end method
+
+
+# virtual methods
+.method public onReceive(Landroid/content/Context;Landroid/content/Intent;)V
+    .registers 5
+
+    .line 250
+    invoke-virtual {p2}, Landroid/content/Intent;->getAction()Ljava/lang/String;
+
+    move-result-object p1
+
+    .line 252
+    const-string p2, "android.intent.action.NETWORK_SET_TIME"
+
+    invoke-virtual {p2, p1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+
+    move-result p1
+
+    if-eqz p1, :cond_15
+
+    .line 253
+    iget-object p1, p0, Lcom/android/server/NewNetworkTimeUpdateService$2;->this$0:Lcom/android/server/NewNetworkTimeUpdateService;
+
+    invoke-static {}, Landroid/os/SystemClock;->elapsedRealtime()J
+
+    move-result-wide v0
+
+    invoke-static {p1, v0, v1}, Lcom/android/server/NewNetworkTimeUpdateService;->access$202(Lcom/android/server/NewNetworkTimeUpdateService;J)J
+
+    .line 255
+    :cond_15
+    return-void
+.end method
