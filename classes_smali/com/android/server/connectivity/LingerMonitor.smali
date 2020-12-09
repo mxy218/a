@@ -37,7 +37,7 @@
     .end annotation
 .end field
 
-.field private static final VDBG:Z = false
+.field private static final VDBG:Z
 
 .field private static sNotifyTypeNames:Landroid/util/SparseArray;
     .annotation system Ldalvik/annotation/Signature;

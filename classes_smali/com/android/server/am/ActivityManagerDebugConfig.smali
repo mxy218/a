@@ -92,7 +92,7 @@
 
 .field static final TAG_AM:Ljava/lang/String; = "ActivityManager"
 
-.field static final TAG_WITH_CLASS_NAME:Z = false
+.field static final TAG_WITH_CLASS_NAME:Z
 
 
 # direct methods

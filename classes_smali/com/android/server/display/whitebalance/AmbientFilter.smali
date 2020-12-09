@@ -12,7 +12,7 @@
 
 
 # static fields
-.field protected static final DEBUG:Z = false
+.field protected static final DEBUG:Z
 
 
 # instance fields

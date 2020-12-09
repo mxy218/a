@@ -25,7 +25,7 @@
 
 .field private static final TAG:Ljava/lang/String;
 
-.field private static final VERBOSE:Z = false
+.field private static final VERBOSE:Z
 
 
 # instance fields

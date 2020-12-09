@@ -13,7 +13,7 @@
 
 
 # static fields
-.field private static final DBG:Z = false
+.field private static final DBG:Z
 
 
 # instance fields

@@ -35,7 +35,7 @@
 
 .field private static final TAG:Ljava/lang/String; = "TelephonyRegistry"
 
-.field private static final VDBG:Z = false
+.field private static final VDBG:Z
 
 
 # instance fields

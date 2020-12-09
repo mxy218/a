@@ -193,7 +193,7 @@
 
 .field private static final WINDOW_TYPES_WHERE_HOME_DOESNT_WORK:[I
 
-.field static final localLOGV:Z = false
+.field static final localLOGV:Z
 
 .field static sApplicationLaunchKeyCategories:Landroid/util/SparseArray;
     .annotation system Ldalvik/annotation/Signature;

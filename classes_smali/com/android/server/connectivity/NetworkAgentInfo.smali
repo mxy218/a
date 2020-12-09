@@ -28,11 +28,11 @@
 
 .field public static final EVENT_NETWORK_LINGER_COMPLETE:I = 0x3e9
 
-.field private static final REMOVE:Z = false
+.field private static final REMOVE:Z
 
 .field private static final TAG:Ljava/lang/String;
 
-.field private static final VDBG:Z = false
+.field private static final VDBG:Z
 
 
 # instance fields

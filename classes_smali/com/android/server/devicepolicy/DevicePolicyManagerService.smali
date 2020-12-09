@@ -198,7 +198,7 @@
 
 .field private static final UNATTENDED_MANAGED_KIOSK_MS:I = 0x7530
 
-.field private static final VERBOSE_LOG:Z = false
+.field private static final VERBOSE_LOG:Z
 
 
 # instance fields

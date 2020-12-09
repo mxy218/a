@@ -99,7 +99,7 @@
 
 .field static final WORKING_INDEX:I = 0x1
 
-.field static final localLOGV:Z = false
+.field static final localLOGV:Z
 
 .field static final sBatchOrder:Lcom/android/server/AlarmManagerService$BatchTimeOrder;
 

@@ -27,9 +27,9 @@
 
 .field private static final TAG:Ljava/lang/String; = "IntentResolver"
 
-.field private static final localLOGV:Z = false
+.field private static final localLOGV:Z
 
-.field private static final localVerificationLOGV:Z = false
+.field private static final localVerificationLOGV:Z
 
 .field private static final mResolvePrioritySorter:Ljava/util/Comparator;
 

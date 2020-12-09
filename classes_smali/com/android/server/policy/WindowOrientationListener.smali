@@ -20,7 +20,7 @@
 
 .field private static final TAG:Ljava/lang/String; = "WindowOrientationListener"
 
-.field private static final USE_GRAVITY_SENSOR:Z = false
+.field private static final USE_GRAVITY_SENSOR:Z
 
 
 # instance fields

@@ -15,11 +15,11 @@
 
 
 # static fields
-.field private static final DBG:Z = false
+.field private static final DBG:Z
 
 .field private static final TAG:Ljava/lang/String;
 
-.field private static final VDBG:Z = false
+.field private static final VDBG:Z
 
 .field private static final messageClasses:[Ljava/lang/Class;
 

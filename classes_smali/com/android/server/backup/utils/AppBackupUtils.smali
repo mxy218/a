@@ -4,7 +4,7 @@
 
 
 # static fields
-.field private static final DEBUG:Z = false
+.field private static final DEBUG:Z
 
 .field private static final systemPackagesWhitelistedForAllUsers:Ljava/util/Set;
     .annotation system Ldalvik/annotation/Signature;

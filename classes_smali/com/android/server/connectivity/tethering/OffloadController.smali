@@ -15,7 +15,7 @@
 # static fields
 .field private static final ANYIP:Ljava/lang/String; = "0.0.0.0"
 
-.field private static final DBG:Z = false
+.field private static final DBG:Z
 
 .field private static final EMPTY_STATS:Lcom/android/server/connectivity/tethering/OffloadHardwareInterface$ForwardedStats;
 

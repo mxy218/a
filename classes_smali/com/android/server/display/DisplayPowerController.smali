@@ -78,7 +78,7 @@
 
 .field private static final TYPICAL_PROXIMITY_THRESHOLD:F = 5.0f
 
-.field private static final USE_COLOR_FADE_ON_ANIMATION:Z = false
+.field private static final USE_COLOR_FADE_ON_ANIMATION:Z
 
 
 # instance fields

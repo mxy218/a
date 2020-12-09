@@ -1823,13 +1823,11 @@
     .line 1231
     iget-boolean v0, p0, Lcom/android/server/biometrics/BiometricServiceBase;->mCleanupUnusedFingerprints:Z
 
-    if-eqz v0, :cond_7
+    if-eqz v0, :cond_4
 
     .line 1232
-    invoke-direct {p0, p1}, Lcom/android/server/biometrics/BiometricServiceBase;->enumerateUser(I)V
-
     .line 1234
-    :cond_7
+    :cond_4
     return-void
 .end method
 
