@@ -1,0 +1,28 @@
+.class public interface abstract Lcom/android/systemui/statusbar/policy/KeyguardMonitor$Callback;
+.super Ljava/lang/Object;
+.source "KeyguardMonitor.java"
+
+
+# annotations
+.annotation system Ldalvik/annotation/EnclosingClass;
+    value = Lcom/android/systemui/statusbar/policy/KeyguardMonitor;
+.end annotation
+
+.annotation system Ldalvik/annotation/InnerClass;
+    accessFlags = 0x609
+    name = "Callback"
+.end annotation
+
+
+# virtual methods
+.method public onKeyguardFadingAwayChanged()V
+    .registers 1
+
+    return-void
+.end method
+
+.method public onKeyguardShowingChanged()V
+    .registers 1
+
+    return-void
+.end method
